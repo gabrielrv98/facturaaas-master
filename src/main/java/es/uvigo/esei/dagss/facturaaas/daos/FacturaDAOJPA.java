@@ -23,20 +23,20 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     
    
     @Override
-    public List<Factura> buscarTodasFacturas(Usuario cliente){
-        TypedQuery<Factura> query = em.createQuery("SELECT u FROM Factura AS u WHERE u.cliente = :cliente", Factura.class);
-        query.setParameter("cliente", cliente.getId());
+    public List<Factura> buscarTodasFacturas(Usuario propietario){
+        TypedQuery<Factura> query = em.createQuery("SELECT u FROM Factura AS u WHERE u.propietario.id = :Idpropietario", Factura.class);
+        query.setParameter("Idpropietario", propietario.getId());
         return query.getResultList();
     }
     
     @Override
-    public Factura buscarPorNumeroDeFactura(Usuario cliente,String numeroDeFactura) {
+    public Factura buscarPorNumeroDeFactura(Usuario propietario,String numeroDeFactura) {
         TypedQuery<Factura> query = 
                 em.createQuery("SELECT u "
                         + "FROM Factura AS u "
-                        + "WHERE u.numeroDeFactura = :numeroDeFactura AND u.cliente = :cliente", Factura.class);
+                        + "WHERE u.numeroDeFactura = :numeroDeFactura AND u.propietario.id = :idPropietario", Factura.class);
         query.setParameter("numeroDeFactura", numeroDeFactura);
-        query.setParameter("cliente", cliente.getId());
+        query.setParameter("idPropietario", propietario.getId());
         
         List<Factura> resultados = query.getResultList();
         if ((resultados != null) && (!resultados.isEmpty())) {
@@ -46,21 +46,21 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     }
     
     @Override
-    public List<Factura> buscarPorFecha(Usuario cliente,Date fecha) {
+    public List<Factura> buscarPorFecha(Usuario propietario,Date fecha) {
         TypedQuery<Factura> query = em.createQuery("SELECT u "
                 + "FROM Factura AS u "
-                + "WHERE u.fecha = :fecha AND u.cliente = :cliente", Factura.class);
+                + "WHERE u.fecha = :fecha AND u.propietario.id = :idPropietario", Factura.class);
         query.setParameter("fecha", fecha);
-        query.setParameter("cliente", cliente.getId());
+        query.setParameter("idPropietario", propietario.getId());
         return query.getResultList();
     }
 
     @Override
-    public List<Factura> buscarPorEstado(Usuario cliente,EstadoFactura estado) {
+    public List<Factura> buscarPorEstado(Usuario propietario,EstadoFactura estado) {
         TypedQuery<Factura> query = em.createQuery("SELECT u FROM Factura AS u  "
-                + "WHERE u.estado = :estado AND u.cliente = :cliente", Factura.class);
+                + "WHERE u.estado = :estado AND u.propietario.id = :idPropietario", Factura.class);
         query.setParameter("estado", estado);
-        query.setParameter("cliente", cliente.getId());
+        query.setParameter("idPropietario", propietario.getId());
         return query.getResultList();
     }
     
