@@ -26,7 +26,7 @@ public class Factura implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;//hace referencia a NUMERODEFACTURA
+    private Long numeroDeFactura;//hace referencia a NUMERODEFACTURA
 
     private String ejercicio;
 
@@ -36,7 +36,7 @@ public class Factura implements Serializable{
     private Date fecha;
     
     @ManyToOne
-    private String formaDePago;//es la del usuario ac activo
+    private FormaPago formaDePago;//es la del usuario ac activo
     //copie de USUARIO-Cliente-DatosFacturacion
 
     @Enumerated(EnumType.STRING)
@@ -48,20 +48,20 @@ public class Factura implements Serializable{
     }
 
     public Factura(Long id, String ejercicio, String cliente, Date fecha,
-                        String formaDePago) {
-        this.id = id;
+                        FormaPago formaDePago) {
+        this.numeroDeFactura = id;
         this.ejercicio = ejercicio;
         this.cliente = cliente;
         this.fecha = fecha;
         this.formaDePago = formaDePago;
     }
 
-    public Long getId() {
-        return id;
+    public Long getNumeroDeFactura() {
+        return numeroDeFactura;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setNumeroDeFactura(Long numeroDeFactura) {
+        this.numeroDeFactura = numeroDeFactura;
     }
 
     public String getEjercicio() {
@@ -88,11 +88,11 @@ public class Factura implements Serializable{
         this.fecha = fecha;
     }
 
-    public String getFormaDePago() {
+    public FormaPago getFormaDePago() {
         return formaDePago;
     }
 
-    public void setFormaDePago(String formaDePago) {
+    public void setFormaDePago(FormaPago formaDePago) {
         this.formaDePago = formaDePago;
     }
 
@@ -116,8 +116,8 @@ public class Factura implements Serializable{
     //ni idea si hace falta
     @Override
     public int hashCode() {
-        if (id != null) {
-            return Objects.hashCode(this.id);
+        if (numeroDeFactura != null) {
+            return Objects.hashCode(this.numeroDeFactura);
         } else {
             return hashCodePorContenido();
         }
@@ -127,7 +127,7 @@ public class Factura implements Serializable{
 
     @Override
     public boolean equals(Object obj) {
-        if (id != null) {
+        if (numeroDeFactura != null) {
             return equalsPorId(obj);
         } else {
             return equalsPorContenido(obj);
@@ -137,7 +137,7 @@ public class Factura implements Serializable{
         //ni idea si hace falta
     public int hashCodePorContenido() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.id);
+        hash = 67 * hash + Objects.hashCode(this.numeroDeFactura);
         hash = 67 * hash + Objects.hashCode(this.ejercicio);
         hash = 67 * hash + Objects.hashCode(this.cliente);
         hash = 67 * hash + Objects.hashCode(this.fecha);
@@ -158,7 +158,7 @@ public class Factura implements Serializable{
             return false;
         }
         final Factura other = (Factura) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.numeroDeFactura, other.numeroDeFactura)) {
             return false;
         }
         if (!Objects.equals(this.ejercicio, other.ejercicio)) {
@@ -195,7 +195,7 @@ public class Factura implements Serializable{
             return false;
         }
         final Factura other = (Factura) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.numeroDeFactura, other.numeroDeFactura)) {
             return false;
         }
         return true;
@@ -203,7 +203,7 @@ public class Factura implements Serializable{
 
     @Override
     public String toString() {
-        return "Factura{" + "id=" + id + ", ejercicio=" + ejercicio + ", cliente=" + cliente + ", fecha=" + fecha 
+        return "Factura{" + "id=" + numeroDeFactura + ", ejercicio=" + ejercicio + ", cliente=" + cliente + ", fecha=" + fecha 
                 + ", formaDePago=" + formaDePago + ", estado=" + estado + ", comentarios=" + comentarios +'}';
     }
 }
