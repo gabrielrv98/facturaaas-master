@@ -45,6 +45,8 @@ public class Pago implements Serializable{
 
     public Pago(Long numeroDeFactura, String nombrecliente, String idcliente, int importe, Date fechavencimiento,
             EstadoPago estado) {
+        
+        
         this.numeroDeFactura = numeroDeFactura;
         this.nombrecliente = nombrecliente;
         this.idcliente = idcliente;

@@ -18,16 +18,18 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
     
     
     @Override
-    public List<Pago> buscarTodosLosPagos(){
+    public List<Pago> buscarTodosLosPagos(Usuario propietario){
         TypedQuery<Pago> query = 
                 em.createQuery("SELECT u "
-                        + "FROM Pago AS u ", Pago.class);
+                        + "FROM Pago AS u"
+                        + "WHERE u.cliente = :cliente", Pago.class);
+            query.setParameter("cliente", propietario.getId());
         
         return query.getResultList();
     }
     
     @Override
-    public Pago buscarPorNumeroDeFactura(String numeroDeFactura) {
+    public Pago buscarPorNumeroDeFactura(Usuario propietario, String numeroDeFactura) {
         TypedQuery<Pago> query = 
                 em.createQuery("SELECT u "
                         + "FROM Pago AS u "
@@ -42,7 +44,7 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
     }
     
     @Override
-    public List<Pago> buscarPorFechaVencimiento(Date fecha) {
+    public List<Pago> buscarPorFechaVencimiento(Usuario propietario, Date fecha) {
         TypedQuery<Pago> query = em.createQuery("SELECT u "
                 + "FROM Pago AS u "
                 + "WHERE u.fechaVencimiento = :fecha", Pago.class);
@@ -51,7 +53,7 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
     }
 
     @Override
-    public List<Pago> buscarPorEstado(EstadoPago estado) {
+    public List<Pago> buscarPorEstado(Usuario propietario, EstadoPago estado) {
         TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u  "
                 + "WHERE u.estado = :estado", Pago.class);
         query.setParameter("estado", estado);
