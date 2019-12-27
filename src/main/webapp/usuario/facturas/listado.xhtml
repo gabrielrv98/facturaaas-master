@@ -15,7 +15,79 @@
     </ui:define>
 
     <ui:define name="contenido">
-        <h2>Historia de usuario H14</h2>
+         <h:form id="formularioListado">     
+            <b:container fluid="true">
+                <b:panel title="Listado de Facturas" collapsible="false" offset="1" span="9">
+                    <b:panelGrid columns="4" col-spans="6,2,2,2">
+                        <b:inputText value="#{facturasController.textoBusqueda}" />
+                        <b:commandButton value="Buscar por Numero de factura"  
+                                         actionListener="#{facturasController.doBuscarPorNumeroDeFactura()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar por fecha"  
+                                         actionListener="#{facturasController.doBuscarPorFecha()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar por estado de la factura"  
+                                         actionListener="#{facturasController.doBuscarPorEstado()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar Todos"  
+                                         actionListener="#{facturasController.doBuscarTodos()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                    </b:panelGrid>
+
+
+                    <b:dataTable id="tablaListado"  class="tablaListadoClass"
+                                 value="#{facturaController.facturas}"
+                                 var="factura" 
+                                 striped="true" 
+                                 page-length="10" searching="false">
+                        <b:dataTableColumn label="Nuero de la factura">
+                            <h:outputText value="#{factura.numeroDeFactura}"/>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn label="Ejercicio">
+                            <h:outputText value="#{factura.ejercicio}" />
+                        </b:dataTableColumn>                    
+
+                        <b:dataTableColumn label="Cliente">
+                            <h:outputText value="#{factura.cliente}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Fecha de emisión">
+                            <h:outputText value="#{factura.fecha}" />
+                        </b:dataTableColumn>                  
+
+                        <b:dataTableColumn label="Forma de pago">
+                            <h:outputText value="#{factura.formaDePago.nombre}, #{factura.formaDePago.numeroPagos} (#{factura.formaDePago.periodicidad})" />
+                        </b:dataTableColumn>                    
+
+                        <b:dataTableColumn label="Estado" >
+                            <h:outputText value="#{factura.estado}" />
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn label="Comentarios" >
+                            <h:outputText value="#{facturas.comentarios}" />
+                        </b:dataTableColumn>
+
+
+                        <b:dataTableColumn label="" orderable="false">
+                            <b:commandButton id="botonEditar" icon-awesome="pencil" tooltip="Editar Factura" ajax="true" 
+                                             actionListener="#{facturaController.doEditar(factura)}" 
+                                             update=":formularioEditar"
+                                             oncomplete="$('.modal-editar-class').modal('show')"/>                                                                                                                    
+                        </b:dataTableColumn>                            
+                    </b:dataTable>
+
+                    <f:facet name="footer">     <!-- no se si tooltip esta bien -->
+                        <b:commandButton id="botonNuevo" icon-awesome="plus" value="Crear Factura" tooltip="Nuevo Cliente" ajax="true"
+                                         actionListener="#{facturasController.doNuevo()}" 
+                                         update=":formularioEditar"
+                                         oncomplete="$('.modal-editar-class').modal('show')"/>
+                    </f:facet>
+                </b:panel>
+            </b:container>
+        </h:form>  
+        
+        <ui:include src="fragmento-editar.xhtml"/>
     </ui:define>  
     
     
