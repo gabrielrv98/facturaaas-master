@@ -6,6 +6,7 @@
 package es.uvigo.esei.dagss.facturaaas.controladores.usuario;
 
 import es.uvigo.esei.dagss.facturaaas.controladores.AutenticacionController;
+import es.uvigo.esei.dagss.facturaaas.daos.DatosFacturacionDAO;
 import es.uvigo.esei.dagss.facturaaas.daos.FacturaDAO;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
@@ -30,6 +31,9 @@ public class FacturasControler implements Serializable{
    
     @Inject
     private FacturaDAO dao;
+    
+    @Inject
+    private DatosFacturacionDAO DFdao;
 
     @Inject
     private AutenticacionController autenticacionController;
@@ -150,6 +154,8 @@ public class FacturasControler implements Serializable{
         this.facturaActual.setNumeroDeFactura((long) dao.maxNumeroDeFactura()+1);//nuevo numero de factura
         this.facturaActual.setFecha(Calendar.getInstance().getTime());
         this.facturaActual.setEstado(EstadoFactura.EMITIDA);
+        long id = autenticacionController.getUsuarioLogueado().getId();
+        this.facturaActual.setFormaDePago(DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto());
     }
 
     public void doEditar(Factura factura) {
