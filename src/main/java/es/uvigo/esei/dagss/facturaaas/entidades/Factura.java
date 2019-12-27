@@ -6,7 +6,6 @@
 package es.uvigo.esei.dagss.facturaaas.entidades;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,10 +32,12 @@ public class Factura implements Serializable{
 
     private String cliente;
 
-    private String fecha;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
     
     @ManyToOne
     private String formaDePago;//es la del usuario ac activo
+    //copie de USUARIO-Cliente-DatosFacturacion
 
     @Enumerated(EnumType.STRING)
     private EstadoFactura estado;
@@ -47,7 +47,7 @@ public class Factura implements Serializable{
     public Factura() {
     }
 
-    public Factura(Long id, String ejercicio, String cliente, String fecha,
+    public Factura(Long id, String ejercicio, String cliente, Date fecha,
                         String formaDePago) {
         this.id = id;
         this.ejercicio = ejercicio;
@@ -80,11 +80,11 @@ public class Factura implements Serializable{
         this.cliente = cliente;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -170,10 +170,12 @@ public class Factura implements Serializable{
         if (!Objects.equals(this.fecha, other.fecha)) {
             return false;
         }
-        if (!Objects.equals(this.formaDePago, other.formaDePago)) {
+        
+        if (this.estado != other.estado) {
             return false;
         }
-        if (this.estado != other.estado) {
+        //no se si forma de pago tamben va aqui porque si no esta pagada no tiene forma de pago
+        if (!Objects.equals(this.formaDePago, other.formaDePago)) {
             return false;
         }
         if (!Objects.equals(this.comentarios, other.comentarios)) {
