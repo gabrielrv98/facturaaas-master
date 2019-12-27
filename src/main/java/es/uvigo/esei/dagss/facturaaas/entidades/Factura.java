@@ -27,7 +27,7 @@ public class Factura implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long numeroDeFactura;//hace referencia a NUMERODEFACTURA
+    private Long numeroDeFactura;
 
     private String nombreCliente;
     
