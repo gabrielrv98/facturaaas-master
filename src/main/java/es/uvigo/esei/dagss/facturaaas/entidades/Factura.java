@@ -14,6 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,33 +29,94 @@ public class Factura implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long numeroDeFactura;//hace referencia a NUMERODEFACTURA
 
+    private String nombreCliente;
+    
+    private String nifCliente;
+    
     private String ejercicio;
 
-    private String cliente;
+    @ManyToOne
+    @JoinColumn(name = "USUARIO_ID")
+    private Usuario propietario;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
     
     @ManyToOne
-    private FormaPago formaDePago;//es la del usuario ac activo
-    //copie de USUARIO-Cliente-DatosFacturacion
+    @JoinColumn(name = "FORMA_PAGO_ID")
+    private FormaPago formaDePago;
 
     @Enumerated(EnumType.STRING)
     private EstadoFactura estado;
     
     private String comentarios;
+    
+    private float importe;
+    
+    @ManyToOne
+    @JoinColumn(name = "TIPO_IVA_ID")
+    private TipoIVA iva;
 
     public Factura() {
     }
 
-    public Factura(Long id, String ejercicio, String cliente, Date fecha,
-                        FormaPago formaDePago) {
-        this.numeroDeFactura = id;
+    public Factura(Long numeroDeFactura, String nombreCliente, String nifCliente, String ejercicio, 
+            Usuario propietario, Date fecha, FormaPago formaDePago, EstadoFactura estado, String comentarios,
+            float importe, TipoIVA iva) {
+        this.numeroDeFactura = numeroDeFactura;
+        this.nombreCliente = nombreCliente;
+        this.nifCliente = nifCliente;
         this.ejercicio = ejercicio;
-        this.cliente = cliente;
+        this.propietario = propietario;
         this.fecha = fecha;
         this.formaDePago = formaDePago;
+        this.estado = estado;
+        this.comentarios = comentarios;
+        this.importe = importe;
+        this.iva = iva;
     }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+
+    public String getNifCliente() {
+        return nifCliente;
+    }
+
+    public void setNifCliente(String nifCliente) {
+        this.nifCliente = nifCliente;
+    }
+
+    public Usuario getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Usuario propietario) {
+        this.propietario = propietario;
+    }
+
+    public float getImporte() {
+        return importe;
+    }
+
+    public void setImporte(float importe) {
+        this.importe = importe;
+    }
+
+    public TipoIVA getIva() {
+        return iva;
+    }
+
+    public void setIva(TipoIVA iva) {
+        this.iva = iva;
+    }
+
+    
 
     public Long getNumeroDeFactura() {
         return numeroDeFactura;
@@ -70,14 +132,6 @@ public class Factura implements Serializable{
 
     public void setEjercicio(String ejercicio) {
         this.ejercicio = ejercicio;
-    }
-
-    public String getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
     }
 
     public Date getFecha() {
@@ -138,12 +192,16 @@ public class Factura implements Serializable{
     public int hashCodePorContenido() {
         int hash = 7;
         hash = 67 * hash + Objects.hashCode(this.numeroDeFactura);
+        hash = 67 * hash + Objects.hashCode(this.nombreCliente);
+        hash = 67 * hash + Objects.hashCode(this.nifCliente);
         hash = 67 * hash + Objects.hashCode(this.ejercicio);
-        hash = 67 * hash + Objects.hashCode(this.cliente);
+        hash = 67 * hash + Objects.hashCode(this.propietario);
         hash = 67 * hash + Objects.hashCode(this.fecha);
         hash = 67 * hash + Objects.hashCode(this.formaDePago);
         hash = 67 * hash + Objects.hashCode(this.estado);
         hash = 67 * hash + Objects.hashCode(this.comentarios);
+        hash = 67 * hash + Objects.hashCode(this.importe);
+        hash = 67 * hash + Objects.hashCode(this.iva);
         return hash;
     }
 
@@ -164,7 +222,13 @@ public class Factura implements Serializable{
         if (!Objects.equals(this.ejercicio, other.ejercicio)) {
             return false;
         }
-        if (!Objects.equals(this.cliente, other.cliente)) {
+        if (!Objects.equals(this.nombreCliente, other.nombreCliente)) {
+            return false;
+        }
+        if (!Objects.equals(this.nifCliente, other.nifCliente)) {
+            return false;
+        }
+        if (!Objects.equals(this.propietario, other.propietario)) {
             return false;
         }
         if (!Objects.equals(this.fecha, other.fecha)) {
@@ -174,11 +238,18 @@ public class Factura implements Serializable{
         if (this.estado != other.estado) {
             return false;
         }
-        //no se si forma de pago tamben va aqui porque si no esta pagada no tiene forma de pago
         if (!Objects.equals(this.formaDePago, other.formaDePago)) {
             return false;
         }
         if (!Objects.equals(this.comentarios, other.comentarios)) {
+            return false;
+        }
+        
+        if (!Objects.equals(this.importe, other.importe)) {
+            return false;
+        }
+        
+        if (!Objects.equals(this.iva, other.iva)) {
             return false;
         }
         return true;
@@ -203,7 +274,8 @@ public class Factura implements Serializable{
 
     @Override
     public String toString() {
-        return "Factura{" + "id=" + numeroDeFactura + ", ejercicio=" + ejercicio + ", cliente=" + cliente + ", fecha=" + fecha 
-                + ", formaDePago=" + formaDePago.toString() + ", estado=" + estado + ", comentarios=" + comentarios +'}';
+        return "Factura{" + "id=" + numeroDeFactura + ", ejercicio=" + ejercicio + ", cliente=" + nombreCliente + " - "+ nifCliente +", fecha=" + fecha 
+                + ", formaDePago=" + formaDePago.toString() + ", estado=" + estado.toString() + ", comentarios=" + comentarios 
+                + ", importe=" + importe + ", tipo iva=" + iva.toString() +'}';
     }
 }
