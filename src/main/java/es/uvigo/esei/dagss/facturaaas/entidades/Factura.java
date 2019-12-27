@@ -204,6 +204,6 @@ public class Factura implements Serializable{
     @Override
     public String toString() {
         return "Factura{" + "id=" + numeroDeFactura + ", ejercicio=" + ejercicio + ", cliente=" + cliente + ", fecha=" + fecha 
-                + ", formaDePago=" + formaDePago + ", estado=" + estado + ", comentarios=" + comentarios +'}';
+                + ", formaDePago=" + formaDePago.toString() + ", estado=" + estado + ", comentarios=" + comentarios +'}';
     }
 }

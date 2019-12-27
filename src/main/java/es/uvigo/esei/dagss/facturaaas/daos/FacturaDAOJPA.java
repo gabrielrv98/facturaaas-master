@@ -11,6 +11,7 @@ import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -38,8 +39,7 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
         TypedQuery<Factura> query = 
                 em.createQuery("SELECT u "
                         + "FROM Factura AS u "
-                        + "WHERE u.NUMERODEFACTURA = :numeroDeFactura"
-                        + "WHERE u.CLIENTE = :cliente", Factura.class);
+                        + "WHERE u.numeroDeFactura = :numeroDeFactura AND u.cliente = :cliente", Factura.class);
         query.setParameter("numeroDeFactura", numeroDeFactura);
         query.setParameter("cliente", cliente.getId());
         
@@ -54,8 +54,7 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     public List<Factura> buscarPorFecha(Usuario cliente,Date fecha) {
         TypedQuery<Factura> query = em.createQuery("SELECT u "
                 + "FROM Factura AS u "
-                + "WHERE u.FECHADEEMISION = :fecha"
-                + "WHERE u.CLIENTE = :cliente", Factura.class);
+                + "WHERE u.fecha = :fecha AND u.cliente = :cliente", Factura.class);
         query.setParameter("fecha", fecha);
         query.setParameter("cliente", cliente.getId());
         return query.getResultList();
@@ -63,13 +62,20 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
 
     @Override
     public List<Factura> buscarPorEstado(Usuario cliente,EstadoFactura estado) {
-        TypedQuery<Factura> query = em.createQuery("SELECT u "
-                + "FROM Factura AS u "
-                + "WHERE u.ESTADO = :estado"
-                + "WHERE u.CLIENTE = :cliente", Factura.class);
+        TypedQuery<Factura> query = em.createQuery("SELECT u FROM Factura AS u  "
+                + "WHERE u.estado = :estado AND u.cliente = :cliente", Factura.class);
         query.setParameter("estado", estado);
         query.setParameter("cliente", cliente.getId());
         return query.getResultList();
     }
+    
+    @Override
+    public int maxNumeroDeFactura(){
+        Query query = em.createNativeQuery("SELECT MAX(NUMERODEFACTURA) FROM Factura");
+        return query.getFirstResult();
+    }
+    
+    
+    
     
 }

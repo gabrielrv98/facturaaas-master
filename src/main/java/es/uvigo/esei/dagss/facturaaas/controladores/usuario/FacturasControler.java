@@ -7,12 +7,10 @@ package es.uvigo.esei.dagss.facturaaas.controladores.usuario;
 
 import es.uvigo.esei.dagss.facturaaas.controladores.AutenticacionController;
 import es.uvigo.esei.dagss.facturaaas.daos.FacturaDAO;
-import es.uvigo.esei.dagss.facturaaas.entidades.Direccion;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -106,11 +104,10 @@ public class FacturasControler implements Serializable{
                     year+= 1900;
                 }
             }
-            date.set(Calendar.YEAR, year);
             
+            date.set(Calendar.YEAR, year);
             date.set(Calendar.DAY_OF_MONTH, Integer.parseInt(fecha[0]));
             date.set(Calendar.MONTH, Integer.parseInt(fecha[1]));
-            
             
             this.facturas = dao.buscarPorFecha(autenticacionController.getUsuarioLogueado(), date.getTime());
         }
@@ -150,8 +147,9 @@ public class FacturasControler implements Serializable{
     public void doNuevo() {
         this.esNuevo = true;
         this.facturaActual = new Factura();
-        this.facturaActual.setPropietario(autenticacionController.getUsuarioLogueado());
-        this.facturaActual.setDireccion(new Direccion("","","",""));
+        this.facturaActual.setNumeroDeFactura((long) dao.maxNumeroDeFactura()+1);//nuevo numero de factura
+        this.facturaActual.setFecha(Calendar.getInstance().getTime());
+        this.facturaActual.setEstado(EstadoFactura.EMITIDA);
     }
 
     public void doEditar(Factura factura) {
