@@ -24,6 +24,7 @@ public class UsuarioDAOJPA extends GenericoDAOJPA<Usuario, Long> implements Usua
         TypedQuery<Usuario> query = em.createQuery("SELECT u FROM Usuario AS u WHERE u.nombre LIKE :patron", Usuario.class);
         query.setParameter("patron", "%"+patron+"%");
         return query.getResultList();
+        
     }
 
     @Override
