@@ -5,6 +5,7 @@
  */
 package es.uvigo.esei.dagss.facturaaas.daos;
 
+import es.uvigo.esei.dagss.facturaaas.entidades.Cliente;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
@@ -23,12 +24,15 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     //dice que no encuentra u.NUMERODEFACTURA 
     // estado actual: ( db aun no existe)
     @Override
-    public Factura buscarPorNumeroFactura(String numeroDeFactura) {
+    public Factura buscarPorNumeroDeFactura(Cliente cliente,String numeroDeFactura) {
         TypedQuery<Factura> query = 
                 em.createQuery("SELECT u "
                         + "FROM Factura AS u "
-                        + "WHERE u.NUMERODEFACTURA = :numeroDeFactura", Factura.class);
-        query.setParameter("NUMERODEFACTURA", numeroDeFactura);
+                        + "WHERE u.NUMERODEFACTURA = :numeroDeFactura"
+                        + "WHERE u.CLIENTE = :cliente", Factura.class);
+        query.setParameter("numeroDeFactura", numeroDeFactura);
+        query.setParameter("cliente", cliente.getId());
+        
         List<Factura> resultados = query.getResultList();
         if ((resultados != null) && (!resultados.isEmpty())) {
             return resultados.get(0);
@@ -37,23 +41,25 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     }
     
     @Override
-    public List<Factura> buscarPorFecha(Date fecha) {
+    public List<Factura> buscarPorFecha(Cliente cliente,Date fecha) {
         TypedQuery<Factura> query = em.createQuery("SELECT u "
                 + "FROM Factura AS u "
-                + "WHERE u.FECHADEEMISION = :fecha", Factura.class);
+                + "WHERE u.FECHADEEMISION = :fecha"
+                + "WHERE u.CLIENTE = :cliente", Factura.class);
         query.setParameter("fecha", fecha);
+        query.setParameter("cliente", cliente.getId());
         return query.getResultList();
     }
 
     @Override
-    public List<Factura> buscarPorEstado(EstadoFactura estado) {
+    public List<Factura> buscarPorEstado(Cliente cliente,EstadoFactura estado) {
         TypedQuery<Factura> query = em.createQuery("SELECT u "
                 + "FROM Factura AS u "
-                + "WHERE u.ESTADO = :estado", Factura.class);
+                + "WHERE u.ESTADO = :estado"
+                + "WHERE u.CLIENTE = :cliente", Factura.class);
         query.setParameter("estado", estado);
+        query.setParameter("cliente", cliente.getId());
         return query.getResultList();
     }
     
-    //no se si falta un metodo para reasignar su estado.
-
 }
