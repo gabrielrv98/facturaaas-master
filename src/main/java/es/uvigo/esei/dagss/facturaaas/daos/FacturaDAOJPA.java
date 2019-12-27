@@ -21,6 +21,21 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements FacturaDAO{
     
+    
+    @Override
+    public Factura buscarTodasFacturas(Cliente cliente){
+        TypedQuery<Factura> query = 
+                em.createQuery("SELECT u "
+                        + "FROM Factura AS u "
+                        + "WHERE u.CLIENTE = :cliente", Factura.class);
+        query.setParameter("cliente", cliente.getId());
+        
+        List<Factura> resultados = query.getResultList();
+        if ((resultados != null) && (!resultados.isEmpty())) {
+            return resultados.get(0);
+        }
+        return null;  // No encontrado
+    }
     //dice que no encuentra u.NUMERODEFACTURA 
     // estado actual: ( db aun no existe)
     @Override
