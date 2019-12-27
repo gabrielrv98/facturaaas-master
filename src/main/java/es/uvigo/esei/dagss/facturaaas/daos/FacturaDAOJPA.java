@@ -5,7 +5,6 @@
  */
 package es.uvigo.esei.dagss.facturaaas.daos;
 
-import es.uvigo.esei.dagss.facturaaas.entidades.Cliente;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
@@ -23,7 +22,7 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     
     
     @Override
-    public Factura buscarTodasFacturas(Cliente cliente){
+    public Factura buscarTodasFacturas(Usuario cliente){
         TypedQuery<Factura> query = 
                 em.createQuery("SELECT u "
                         + "FROM Factura AS u "
@@ -39,7 +38,7 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     //dice que no encuentra u.NUMERODEFACTURA 
     // estado actual: ( db aun no existe)
     @Override
-    public Factura buscarPorNumeroDeFactura(Cliente cliente,String numeroDeFactura) {
+    public Factura buscarPorNumeroDeFactura(Usuario cliente,String numeroDeFactura) {
         TypedQuery<Factura> query = 
                 em.createQuery("SELECT u "
                         + "FROM Factura AS u "
@@ -56,7 +55,7 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     }
     
     @Override
-    public List<Factura> buscarPorFecha(Cliente cliente,Date fecha) {
+    public List<Factura> buscarPorFecha(Usuario cliente,Date fecha) {
         TypedQuery<Factura> query = em.createQuery("SELECT u "
                 + "FROM Factura AS u "
                 + "WHERE u.FECHADEEMISION = :fecha"
@@ -67,7 +66,7 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     }
 
     @Override
-    public List<Factura> buscarPorEstado(Cliente cliente,EstadoFactura estado) {
+    public List<Factura> buscarPorEstado(Usuario cliente,EstadoFactura estado) {
         TypedQuery<Factura> query = em.createQuery("SELECT u "
                 + "FROM Factura AS u "
                 + "WHERE u.ESTADO = :estado"

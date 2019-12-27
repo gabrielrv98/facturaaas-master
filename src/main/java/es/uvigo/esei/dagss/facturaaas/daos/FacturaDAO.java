@@ -5,7 +5,7 @@
  */
 package es.uvigo.esei.dagss.facturaaas.daos;
 
-import es.uvigo.esei.dagss.facturaaas.entidades.Cliente;
+import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import java.util.Date;
@@ -16,9 +16,9 @@ import java.util.List;
  * @author OrenadorOmega
  */
 public interface FacturaDAO {
-    public Factura buscarTodasFacturas(Cliente propietario);
-    public Factura buscarPorNumeroDeFactura(Cliente propietario, String numeroDeFactura);
-    public List<Factura> buscarPorFecha(Cliente propietario, Date fecha);
-    public List<Factura> buscarPorEstado(Cliente propietario, EstadoFactura estado);
+    public Factura buscarTodasFacturas(Usuario propietario);
+    public Factura buscarPorNumeroDeFactura(Usuario propietario, String numeroDeFactura);
+    public List<Factura> buscarPorFecha(Usuario propietario, Date fecha);
+    public List<Factura> buscarPorEstado(Usuario propietario, EstadoFactura estado);
     
 }
