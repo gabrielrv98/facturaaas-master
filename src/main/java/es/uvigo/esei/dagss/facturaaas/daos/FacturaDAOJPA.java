@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  * @author OrenadorOmega
  */
 @Stateless
-public class Facturas1DAOJPA extends GenericoDAOJPA<Factura, Long> implements Facturas1DAO{
+public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements FacturaDAO{
     
     //dice que no encuentra u.NUMERODEFACTURA 
     // estado actual: ( db aun no existe)

@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author OrenadorOmega
  */
-public interface Facturas1DAO {
+public interface FacturaDAO {
     public Factura buscarPorNumeroFactura(String numeroDeFactura);
     public List<Factura> buscarPorFecha(Date fecha);
     public List<Factura> buscarPorEstado(EstadoFactura estado);
