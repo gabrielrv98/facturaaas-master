@@ -22,18 +22,14 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     
     
     @Override
-    public Factura buscarTodasFacturas(Usuario cliente){
+    public List<Factura> buscarTodasFacturas(Usuario cliente){
         TypedQuery<Factura> query = 
                 em.createQuery("SELECT u "
                         + "FROM Factura AS u "
                         + "WHERE u.CLIENTE = :cliente", Factura.class);
         query.setParameter("cliente", cliente.getId());
         
-        List<Factura> resultados = query.getResultList();
-        if ((resultados != null) && (!resultados.isEmpty())) {
-            return resultados.get(0);
-        }
-        return null;  // No encontrado
+        return query.getResultList();
     }
     //dice que no encuentra u.NUMERODEFACTURA 
     // estado actual: ( db aun no existe)
