@@ -1,6 +1,14 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package es.uvigo.esei.dagss.facturaaas.daos;
 
+import es.uvigo.esei.dagss.facturaaas.entidades.Cliente;
+import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoPago;
+import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Pago;
 import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
 import java.util.Date;
@@ -15,53 +23,28 @@ import javax.persistence.TypedQuery;
  */
 @Stateless
 public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
-    
-    
+
     @Override
-    public List<Pago> buscarTodosLosPagos(Usuario propietario){
-        TypedQuery<Pago> query = 
-                em.createQuery("SELECT u "
-                        + "FROM Pago AS u"
-                        + "WHERE u.cliente = :cliente", Pago.class);
-            query.setParameter("cliente", propietario.getId());
-        
-        return query.getResultList();
-    }
-    
-    @Override
-    public Pago buscarPorNumeroDeFactura(Usuario propietario, String numeroDeFactura) {
-        TypedQuery<Pago> query = 
-                em.createQuery("SELECT u "
-                        + "FROM Pago AS u "
-                        + "WHERE u.numeroDeFactura = :numeroDeFactura", Pago.class);
-        query.setParameter("numeroDeFactura", numeroDeFactura);
-        
-        List<Pago> resultados = query.getResultList();
-        if ((resultados != null) && (!resultados.isEmpty())) {
-            return resultados.get(0);
-        }
-        return null;  // No encontrado
-    }
-    
-    @Override
-    public List<Pago> buscarPorFechaVencimiento(Usuario propietario, Date fecha) {
-        TypedQuery<Pago> query = em.createQuery("SELECT u "
-                + "FROM Pago AS u "
-                + "WHERE u.fechaVencimiento = :fecha", Pago.class);
-        query.setParameter("fechaVencimiento", fecha);
+    public List<Pago> buscarPagosDeCliente(Usuario propietario) {
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.cliente.propietario = :propietario", Pago.class);
+        query.setParameter("propietario", propietario.getId());
         return query.getResultList();
     }
 
     @Override
-    public List<Pago> buscarPorEstado(Usuario propietario, EstadoPago estado) {
-        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u  "
-                + "WHERE u.estado = :estado", Pago.class);
-        query.setParameter("estado", estado);
-        return query.getResultList();
+    public Pago buscarPorNumeroDeFactura(Usuario propietario, String numeroDeFactura) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    
-    
+
+    @Override
+    public List<Pago> buscarPorFechaVencimiento(Usuario propietario, Date fechavencimiento) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Pago> buscarPorEstado(Usuario propietario, EstadoPago estado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }

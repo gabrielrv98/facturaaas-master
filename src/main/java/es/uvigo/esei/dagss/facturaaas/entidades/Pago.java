@@ -22,15 +22,14 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "PAGO")
 public class Pago implements Serializable{
+    // nombre y nif del cliente
     
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long numeroDeFactura;//hace referencia a NUMERODEFACTURA
 
-    private String nombrecliente;
-
-    private String idcliente;
+    private Cliente cliente;
     
     private int importe;
 
@@ -43,13 +42,12 @@ public class Pago implements Serializable{
     public Pago() {
     }
 
-    public Pago(Long numeroDeFactura, String nombrecliente, String idcliente, int importe, Date fechavencimiento,
+    public Pago(Cliente cliente, int importe, Date fechavencimiento,
             EstadoPago estado) {
         
         
         this.numeroDeFactura = numeroDeFactura;
-        this.nombrecliente = nombrecliente;
-        this.idcliente = idcliente;
+        this.cliente = cliente;
         this.importe = importe;
         this.fechavencimiento = fechavencimiento;
     }
@@ -62,21 +60,14 @@ public class Pago implements Serializable{
         this.numeroDeFactura = numeroDeFactura;
     }
 
-    public String getNombrecliente() {
-        return nombrecliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setNombrecliente(String nombrecliente) {
-        this.nombrecliente = nombrecliente;
+    public void setcliente(Cliente cliente) {
+        this.cliente = cliente;
     }
-
-    public String getIdcliente() {
-        return idcliente;
-    }
-
-    public void setIdcliente(String idcliente) {
-        this.idcliente = idcliente;
-    }
+    
 
     public int getImporte() {
         return importe;
@@ -129,8 +120,7 @@ public class Pago implements Serializable{
     public int hashCodePorContenido() {
         int hash = 7;
         hash = 67 * hash + Objects.hashCode(this.numeroDeFactura);
-        hash = 67 * hash + Objects.hashCode(this.nombrecliente);
-        hash = 67 * hash + Objects.hashCode(this.idcliente);
+        hash = 67 * hash + Objects.hashCode(this.cliente);
         hash = 67 * hash + Objects.hashCode(this.fechavencimiento);
         hash = 67 * hash + Objects.hashCode(this.estado);
         hash = 67 * hash + Objects.hashCode(this.importe);
@@ -151,10 +141,7 @@ public class Pago implements Serializable{
         if (!Objects.equals(this.numeroDeFactura, other.numeroDeFactura)) {
             return false;
         }
-        if (!Objects.equals(this.nombrecliente, other.nombrecliente)) {
-            return false;
-        }
-        if (!Objects.equals(this.idcliente, other.idcliente)) {
+        if (!Objects.equals(this.cliente, other.cliente)) {
             return false;
         }
         if (!Objects.equals(this.fechavencimiento, other.fechavencimiento)) {
@@ -190,7 +177,7 @@ public class Pago implements Serializable{
 
     @Override
     public String toString() {
-        return "Pago{" + "id=" + numeroDeFactura + ", nombrecliente=" + nombrecliente + ", idcliente=" + idcliente + ", fecha=" + fechavencimiento 
+        return "Pago{" + "id=" + numeroDeFactura + ", nombrecliente=" + cliente.getNombre() + ", idcliente=" + cliente.getNif() + ", fecha=" + fechavencimiento 
                 +", estado=" + estado + ", importe=" + importe +'}';
     }
 }

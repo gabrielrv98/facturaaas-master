@@ -8,6 +8,7 @@ package es.uvigo.esei.dagss.facturaaas.daos;
 import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoPago;
 import es.uvigo.esei.dagss.facturaaas.entidades.Pago;
+import es.uvigo.esei.dagss.facturaaas.entidades.Cliente;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * @author OrenadorOmega
  */
 public interface PagoDAO extends GenericoDAO<Pago, Long>{
-    public List<Pago> buscarTodosLosPagos(Usuario propietario);
+    public List<Pago> buscarPagosDeCliente(Usuario propietario);
     public Pago buscarPorNumeroDeFactura(Usuario propietario, String numeroDeFactura);
     public List<Pago> buscarPorFechaVencimiento(Usuario propietario, Date fechavencimiento);
     public List<Pago> buscarPorEstado(Usuario propietario, EstadoPago estado);
