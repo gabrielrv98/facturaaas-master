@@ -32,8 +32,16 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
     }
 
     @Override
-    public Pago buscarPorNumeroDeFactura(Usuario propietario, String numeroDeFactura) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Pago buscarPorNumeroDeFactura(Usuario propietario, Long numeroDeFactura) {
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.cliente.propietario = :propietario "
+                + "AND u.numeroDeFactura = :numeroDeFactura", Pago.class);
+        query.setParameter("propietario", propietario.getId());
+        query.setParameter("numeroDeFactura", numeroDeFactura);
+        List<Pago> resultados = query.getResultList();
+        if ((resultados != null) && (!resultados.isEmpty())) {
+            return resultados.get(0);
+        }
+        return null;  // No encontrado
     }
 
     @Override
