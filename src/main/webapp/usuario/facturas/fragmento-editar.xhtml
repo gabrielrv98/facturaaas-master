@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <ui:composition>
+
+        <h:form id="formularioEditar" >
+            <b:modal id="modalEditar" class="modal-editar-class" title="Crear/Editar Factura">
+                <b:container fluid="true">
+                    <b:panel title="Crear/Editar Factura" 
+                             rendered="#{not empty facturasController.facturaActual}" 
+                             collapsible="false">
+                        <b:panelGrid columns="2" col-spans="4,8">
+
+                            <h:outputLabel value="ejercicio" for="ejercicio"/>
+                            <b:inputText id="ejercicio" value="#{facturasController.facturaActual.ejercicio}" required="true" requiredMessage="Indica el ejercicio"/>
+
+                            <h:outputLabel value="fecha" for="fecha"/>
+                            <b:inputText id="fecha" value="#{facturasController.facturaActual.fecha}"/>
+
+                            <!-- La forma de pago y el estado se elige con un boton-->
+                            <h:outputLabel value="Localidad" for="localidad"/>
+                            <b:inputText id="localidad" value="#{facturasController.facturaActual.formaDePago.nombre}"/>
+
+                            <h:outputLabel value="comentarios" for="comentarios"/>
+                            <b:inputText id="comentarios" value="#{facturasController.facturaActual.comentarios}"/>                            
+                        </b:panelGrid>
+
+                        <b:commandButton value="Guardar Cambios" 
+                                         ajax="true" process="@form" update=":formularioListado:tablaListado :mensajesGlobal " 
+                                         actionListener="#{facturasController.doGuardarEditado()}"  
+                                         oncomplete="$('.modal-editar-class').modal('hide')"/>
+
+                        <b:commandButton value="Cancelar" immediate="true"
+                                         ajax="true" process="@form" update=":formularioListado:tablaListado :mensajesGlobal " 
+                                         actionListener="#{facturasController.doCancelarEditado()}" 
+                                         oncomplete="$('.modal-editar-class').modal('hide')" />
+                    </b:panel>
+                </b:container>
+            </b:modal>
+        </h:form>
+
+    </ui:composition>
+</html>

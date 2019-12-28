@@ -24,7 +24,7 @@ import javax.inject.Named;
 public class FacturasControler implements Serializable{
     
     private List<Factura> facturas;
-    private Factura facturaActual;//se usa cuando se crea una nueva factura.
+    private Factura facturaActual;//se usa cuando se crea una nueva factura o se edta una.
     private boolean esNuevo;
     private String textoBusqueda;
 
