@@ -143,32 +143,31 @@ public class PagosController implements Serializable{
         this.esNuevo = true;
         this.pagoAux = new Pago();
         this.pagoAux.setNumeroDeFactura(factura.getNumeroDeFactura());//nuevo numero de factura
-        this.pagoAux.setcliente(factura.getCliente());
+        this.pagoAux.setNombreCliente(factura.getNombreCliente());
+        this.pagoAux.setNifCliente(factura.getNifCliente());
         this.pagoAux.setEstado(EstadoPago.PENDIENTE);
-        this.facturaActual.setEstado(EstadoFactura.EMITIDA);
-        long id = autenticacionController.getUsuarioLogueado().getId();
-        this.facturaActual.setFormaDePago(DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto());
+
     }
 
-    public void doEditar(Factura factura) {
+    public void doEditar(Pago pago) {
         this.esNuevo = false;
-        this.facturaActual = factura;
+        this.pagoAux = pago;
     }
 
 
     public void doGuardarEditado() {
         if (this.esNuevo) {
-            dao.crear(facturaActual);
+            dao.crear(pagoAux);
         } else {
-            dao.actualizar(facturaActual);
+            dao.actualizar(pagoAux);
         }
-        this.facturas = refrescarLista();
-        this.facturaActual = null;
+        this.pagos = refrescarLista();
+        this.pagoAux = null;
         this.esNuevo = false;
     }
 
     public void doCancelarEditado() {
-        this.facturaActual = null;
+        this.pagoAux = null;
         this.esNuevo = false;
     }
 
