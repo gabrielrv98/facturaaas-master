@@ -10,6 +10,7 @@ import es.uvigo.esei.dagss.facturaaas.daos.FormaPagoDAO;
 import es.uvigo.esei.dagss.facturaaas.daos.PagoDAO;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoPago;
 import es.uvigo.esei.dagss.facturaaas.entidades.Pago;
+import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
@@ -138,11 +139,12 @@ public class PagosController implements Serializable{
         }
     }
     
-    public void doNuevo() {
+    public void doNuevo(Factura factura) {
         this.esNuevo = true;
-        this.facturaActual = new Factura();
-        this.facturaActual.setNumeroDeFactura((long) dao.maxNumeroDeFactura()+1);//nuevo numero de factura
-        this.facturaActual.setFecha(Calendar.getInstance().getTime());
+        this.pagoAux = new Pago();
+        this.pagoAux.setNumeroDeFactura(factura.getNumeroDeFactura());//nuevo numero de factura
+        this.pagoAux.setcliente(factura.getCliente());
+        this.pagoAux.setEstado(EstadoPago.PENDIENTE);
         this.facturaActual.setEstado(EstadoFactura.EMITIDA);
         long id = autenticacionController.getUsuarioLogueado().getId();
         this.facturaActual.setFormaDePago(DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto());

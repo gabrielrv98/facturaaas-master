@@ -29,7 +29,6 @@ public class Pago implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long numeroDeFactura;//hace referencia a NUMERODEFACTURA
 
-    @ManyToOne
     private Cliente cliente;
     
     private int importe;
