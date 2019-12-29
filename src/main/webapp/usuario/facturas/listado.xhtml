@@ -36,20 +36,25 @@
 
 
                     <b:dataTable id="tablaListado"  class="tablaListadoClass"
-                                 value="#{facturaController.facturas}"
+                                 value="#{facturasController.facturas}"
                                  var="factura" 
                                  striped="true" 
                                  page-length="10" searching="false">
+                        
                         <b:dataTableColumn label="Nuero de la factura">
                             <h:outputText value="#{factura.numeroDeFactura}"/>
                         </b:dataTableColumn>
 
+                        <b:dataTableColumn label="Cliente">
+                            <h:outputText value="#{factura.nombreCliente}"/>
+                        </b:dataTableColumn>
+                        
                         <b:dataTableColumn label="Ejercicio">
                             <h:outputText value="#{factura.ejercicio}" />
                         </b:dataTableColumn>                    
 
                         <b:dataTableColumn label="Cliente">
-                            <h:outputText value="#{factura.cliente}"/>
+                            <h:outputText value="#{factura.nifCliente}"/>
                         </b:dataTableColumn>
                         
                         <b:dataTableColumn label="Fecha de emisión">
@@ -72,7 +77,7 @@
 
                         <b:dataTableColumn label="" orderable="false">
                             <b:commandButton id="botonEditar" icon-awesome="pencil" tooltip="Editar Factura" ajax="true" 
-                                             actionListener="#{facturaController.doEditar(factura)}" 
+                                             actionListener="#{facturasController.doEditar(factura)}" 
                                              update=":formularioEditar"
                                              oncomplete="$('.modal-editar-class').modal('show')"/>                                                                                                                    
                         </b:dataTableColumn>                            
