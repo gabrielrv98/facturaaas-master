@@ -20,6 +20,6 @@ public interface FacturaDAO extends GenericoDAO<Factura, Long>{
     public List<Factura> buscarPorNumeroDeFactura(Usuario propietario, String numeroDeFactura);
     public List<Factura> buscarPorFecha(Usuario propietario, Date fecha);
     public List<Factura> buscarPorEstado(Usuario propietario, EstadoFactura estado);
-    public int maxNumeroDeFactura();
+    public long maxNumeroDeFactura();
     
 }

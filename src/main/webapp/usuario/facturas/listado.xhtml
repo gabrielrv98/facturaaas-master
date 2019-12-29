@@ -44,21 +44,23 @@
                         <b:dataTableColumn label="Nuero de la factura">
                             <h:outputText value="#{factura.numeroDeFactura}"/>
                         </b:dataTableColumn>
-
-                        <b:dataTableColumn label="Cliente">
-                            <h:outputText value="#{factura.nombreCliente}"/>
-                        </b:dataTableColumn>
                         
                         <b:dataTableColumn label="Ejercicio">
                             <h:outputText value="#{factura.ejercicio}" />
                         </b:dataTableColumn>                    
+                        
+                        <b:dataTableColumn label="Nombre del cliente">
+                            <h:outputText value="#{factura.nombreCliente}"/>
+                        </b:dataTableColumn>
 
-                        <b:dataTableColumn label="Cliente">
+                        <b:dataTableColumn label="Nif del cliente">
                             <h:outputText value="#{factura.nifCliente}"/>
                         </b:dataTableColumn>
                         
                         <b:dataTableColumn label="Fecha de emisión">
-                            <h:outputText value="#{factura.fecha}" />
+                            <h:outputText value="#{factura.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
                         </b:dataTableColumn>                  
 
                         

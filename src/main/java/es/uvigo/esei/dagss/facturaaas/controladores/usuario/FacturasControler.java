@@ -166,11 +166,16 @@ public class FacturasControler implements Serializable{
         this.facturas = refrescarLista();
     }
     
+    
+    //acabar
     public void valueChangeMethod(ValueChangeEvent e){
+        try{
         Cliente cliente = (Cliente) e.getNewValue();
         facturaActual.setNombreCliente(cliente.getNombre());
         facturaActual.setNifCliente(cliente.getNif());
-        
+        }catch(NullPointerException  ec){
+            
+        }
 	}
     
     public List<Cliente> getClientes(){
@@ -181,25 +186,15 @@ public class FacturasControler implements Serializable{
         return FPdao.buscarActivas();
     }
     
-    
-    /*
-    <h:outputLabel value="Cliente" for="cliente"/>
-                            <b:selectOneMenu id="cliente"  ajax="true">
-                                             
-                                <f:ajax listener="#{facturasController.valueChangeMethod}"/>
-                                <f:converter converterId="omnifaces.GenericEnumConverter" />
-                                <f:selectItems value="#{facturasController.clientes}"/>
-                            </b:selectOneMenu>
-    */
-    
     public void doNuevo() {
         this.esNuevo = true;
         this.facturaActual = new Factura();
-        this.facturaActual.setNumeroDeFactura((long) dao.maxNumeroDeFactura()+1);//nuevo numero de factura
+        //this.facturaActual.setNumeroDeFactura((long) dao.maxNumeroDeFactura()+1);//nuevo numero de factura
         this.facturaActual.setFecha(Calendar.getInstance().getTime());
         this.facturaActual.setEstado(EstadoFactura.EMITIDA);
         this.facturaActual.setPropietario(autenticacionController.getUsuarioLogueado());
         this.facturaActual.setFormaDePago(DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto());
+        this.facturaActual.setImporte(0);
     }
 
     public void doEditar(Factura factura) {

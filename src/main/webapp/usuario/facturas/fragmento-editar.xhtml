@@ -20,8 +20,10 @@
                             <b:inputText id="ejercicio" value="#{facturasController.facturaActual.ejercicio}" required="true" requiredMessage="Indica el ejercicio"/>
 
                             <h:outputLabel value="Fecha" for="fecha"/>
-                            <b:inputText id="fecha" value="#{facturasController.facturaActual.fecha}" required="true"/>
-
+                            <b:inputText id="fecha" value="#{facturasController.facturaActual.fecha}" required="true">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </b:inputText>
+                            
                             <h:outputLabel value="Estado" for="estado"/>
                             <b:selectOneMenu id="estado" value="#{facturasController.facturaActual.estado}" ajax="true" >
                                 <f:converter converterId="omnifaces.GenericEnumConverter" />
@@ -30,23 +32,27 @@
                             
                             
                             <h:outputLabel value="Forma de Pago por defecto" for="formaPago"/>
-                                    <b:selectOneMenu id="formaPago" value="#{facturasController.facturaActual.formaDePago}"
-                                                     converter="omnifaces.SelectItemsConverter"> 
-                                        <f:selectItems var="formaPago" value="#{facturasController.listadoFormasPago()}"
-                                                       itemValue="#{formaPago}" 
-                                                       itemLabel="#{formaPago.nombre}" />
-                                    </b:selectOneMenu>
-                            
+                            <b:selectOneMenu id="formaPago" value="#{facturasController.facturaActual.formaDePago}"
+                                             converter="omnifaces.SelectItemsConverter"> 
+                                <f:selectItems var="formaPago" value="#{facturasController.listadoFormasPago()}"
+                                               itemValue="#{formaPago}" 
+                                               itemLabel="#{formaPago.nombre}" />
+                            </b:selectOneMenu>
+                             
+                            <!--acabar-->
                             <h:outputLabel value="Cliente" for="cliente"/>
-                                    <b:selectOneMenu id="cliente"
-                                                     converter="omnifaces.SelectItemsConverter"> 
-                                        <f:selectItems var="cliente" value="#{facturasController.getClientes()}"
-                                                       itemValue="#{cliente.nombre}" 
-                                                       itemLabel="#{cliente.nombre}" />
-                                    </b:selectOneMenu>
+                            <b:selectOneMenu id="cliente" onchange="submit()">
+                                        <f:ajax listener="#{facturasController.valueChangeMethod(cliente)}"/>
+                                        <f:selectItems var="cliente" value="#{facturasController.getClientes()}" 
+                                                       itemLabel="#{cliente.nombre}, #{cliente.nif}" 
+                                                       itemValue="#{cliente}"/>
+                            </b:selectOneMenu>
+                            
                             
                             <h:outputLabel value="Comentarios" for="comentarios"/>
                             <b:inputText id="comentarios" value="#{facturasController.facturaActual.comentarios}"/>                            
+                       
+                            <h:outputScript library="primefaces" name="jquery/jquery.js" />
                         </b:panelGrid>
 
                         <b:commandButton value="Guardar Cambios" 
