@@ -6,14 +6,19 @@
 package es.uvigo.esei.dagss.facturaaas.controladores.usuario;
 
 import es.uvigo.esei.dagss.facturaaas.controladores.AutenticacionController;
+import es.uvigo.esei.dagss.facturaaas.daos.ClienteDAO;
 import es.uvigo.esei.dagss.facturaaas.daos.DatosFacturacionDAO;
 import es.uvigo.esei.dagss.facturaaas.daos.FacturaDAO;
+import es.uvigo.esei.dagss.facturaaas.daos.FormaPagoDAO;
+import es.uvigo.esei.dagss.facturaaas.entidades.Cliente;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
+import es.uvigo.esei.dagss.facturaaas.entidades.FormaPago;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -28,12 +33,20 @@ public class FacturasControler implements Serializable{
     private boolean esNuevo;
     private String textoBusqueda;
 
+    
+    private EstadoFactura[] estadosFactura = EstadoFactura.values();
    
     @Inject
     private FacturaDAO dao;
     
     @Inject
     private DatosFacturacionDAO DFdao;
+    
+    @Inject
+    private FormaPagoDAO FPdao;
+    
+    @Inject
+    private ClienteDAO clienteDao;
 
     @Inject
     private AutenticacionController autenticacionController;
@@ -70,6 +83,15 @@ public class FacturasControler implements Serializable{
     public void setTextoBusqueda(String textoBusqueda) {
         this.textoBusqueda = textoBusqueda;
     }
+
+    public EstadoFactura[] getEstadosFactura() {
+        return estadosFactura;
+    }
+
+    public void setEstadosFactura(EstadoFactura[] estadosFactura) {
+        this.estadosFactura = estadosFactura;
+    }
+    
     
     
 
@@ -82,7 +104,7 @@ public class FacturasControler implements Serializable{
 
     
     public void doBuscarPorNumeroDeFactura() {
-        this.facturaActual = dao.buscarPorNumeroDeFactura(autenticacionController.getUsuarioLogueado(),
+        this.facturas = dao.buscarPorNumeroDeFactura(autenticacionController.getUsuarioLogueado(),
                 textoBusqueda);
     }
 
@@ -138,15 +160,37 @@ public class FacturasControler implements Serializable{
                     (autenticacionController.getUsuarioLogueado(),EstadoFactura.RECLAMADA);
                 break;
                 
-            default:
-                
-                throw new AssertionError();
         }
     }
     public void doBuscarTodos() {
         this.facturas = refrescarLista();
     }
     
+    public void valueChangeMethod(ValueChangeEvent e){
+        Cliente cliente = (Cliente) e.getNewValue();
+        facturaActual.setNombreCliente(cliente.getNombre());
+        facturaActual.setNifCliente(cliente.getNif());
+        
+	}
+    
+    public List<Cliente> getClientes(){
+        return clienteDao.buscarTodosConPropietario(autenticacionController.getUsuarioLogueado());
+    }
+    
+    public List<FormaPago> listadoFormasPago() {
+        return FPdao.buscarActivas();
+    }
+    
+    
+    /*
+    <h:outputLabel value="Cliente" for="cliente"/>
+                            <b:selectOneMenu id="cliente"  ajax="true">
+                                             
+                                <f:ajax listener="#{facturasController.valueChangeMethod}"/>
+                                <f:converter converterId="omnifaces.GenericEnumConverter" />
+                                <f:selectItems value="#{facturasController.clientes}"/>
+                            </b:selectOneMenu>
+    */
     
     public void doNuevo() {
         this.esNuevo = true;
@@ -154,7 +198,7 @@ public class FacturasControler implements Serializable{
         this.facturaActual.setNumeroDeFactura((long) dao.maxNumeroDeFactura()+1);//nuevo numero de factura
         this.facturaActual.setFecha(Calendar.getInstance().getTime());
         this.facturaActual.setEstado(EstadoFactura.EMITIDA);
-        long id = autenticacionController.getUsuarioLogueado().getId();
+        this.facturaActual.setPropietario(autenticacionController.getUsuarioLogueado());
         this.facturaActual.setFormaDePago(DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto());
     }
 
