@@ -32,6 +32,18 @@
                         <b:commandButton value="Buscar Todos."  
                                          actionListener="#{facturasController.doBuscarTodos()}"
                                          update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        
+                        <h:outputLabel value="Cliente" for="cliente"/>
+                        <b:selectOneMenu id="cliente" value="#{facturasController.clienteBusqueda}" >
+                                        <f:selectItems var="cliente" value="#{facturasController.getClientes()}" 
+                                                       itemLabel="#{cliente.nombre}, #{cliente.nif}" 
+                                                       itemValue="#{cliente}"/>
+                        </b:selectOneMenu>
+                        
+                        <b:commandButton value="Buscar por cliente."  
+                                         actionListener="#{facturasController.buscarPorCliente()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        
                     </b:panelGrid>
 
 

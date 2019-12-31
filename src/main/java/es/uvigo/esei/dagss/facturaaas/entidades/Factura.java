@@ -20,6 +20,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+
+/**
+ *
+ * @author grvidal
+ */
 @Entity
 @Table(name = "FACTURA")
 public class Factura implements Serializable{
@@ -39,7 +44,7 @@ public class Factura implements Serializable{
     @JoinColumn(name = "USUARIO_ID")
     private Usuario propietario;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fecha;
     
     @ManyToOne
@@ -60,7 +65,7 @@ public class Factura implements Serializable{
     public Factura() {
     }
 
-    public Factura(Long numeroDeFactura, String nombreCliente, String nifCliente, String ejercicio, 
+    public Factura(Long numeroDeFactura, String nombreCliente, Cliente cliente, String nifCliente, String ejercicio, 
             Usuario propietario, Date fecha, FormaPago formaDePago, EstadoFactura estado, String comentarios,
             float importe, TipoIVA iva) {
         this.numeroDeFactura = numeroDeFactura;

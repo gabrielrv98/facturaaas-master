@@ -50,6 +50,8 @@ public class FacturasControler implements Serializable{
 
     @Inject
     private AutenticacionController autenticacionController;
+    
+    private Cliente clienteBusqueda;
 
         
     public List<Factura> getFacturas() {
@@ -92,6 +94,14 @@ public class FacturasControler implements Serializable{
         this.estadosFactura = estadosFactura;
     }
     
+    public Cliente getClienteBusqueda(){
+        return clienteBusqueda;
+    }
+    
+    public void setClienteBusqueda(Cliente cliente){
+        this.clienteBusqueda = cliente;
+    }
+    
     
     
 
@@ -113,12 +123,27 @@ public class FacturasControler implements Serializable{
     public void doBuscarPorFecha() {
         
         //String pattern = "(^\d{1,2}-\d{1,2}-[\d{2}\d{4}]$)";
-        String pattern = "(^[0-9]{1,2}-[0-9]{1,2}-[[0-9]{2}[0-9]{4}]$)";
+        
+        String pattern = "(^[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}$)";
         if (textoBusqueda.matches(pattern)) {
             Calendar date = Calendar.getInstance();
-            String[] fecha =  textoBusqueda.split("-");
+            String[] fecha =  textoBusqueda.split("/");
+            busqueda(date,fecha);
+        } else{
+            pattern = "(^[0-9]{1,2}-[0-9]{1,2}-[0-9]{2,4}$)";
+            if(textoBusqueda.matches(pattern)){
+                Calendar date = Calendar.getInstance();
+                String[] fecha =  textoBusqueda.split("-");
+                busqueda(date,fecha);
             
-            int year = Integer.parseInt(fecha[2]);
+            }else this.facturas = null;
+        }
+        
+    }
+    
+    private void busqueda(Calendar date, String[] fecha){
+        
+        int year = Integer.parseInt(fecha[2]);
             //si el año solo tiene 2 digitos.
             if(year < 100 ){
                 //si el año buscado es menor que los dos ultimos digitos del año actual, se busca 20xx
@@ -136,10 +161,6 @@ public class FacturasControler implements Serializable{
             date.set(Calendar.MONTH, Integer.parseInt(fecha[1]));
             
             this.facturas = dao.buscarPorFecha(autenticacionController.getUsuarioLogueado(), date.getTime());
-        }
-        
-        //la busqueda esta mal hecha, no se como avisar al usuario
-        
     }
     
     public void doBuscarPorEstado(){
@@ -162,6 +183,13 @@ public class FacturasControler implements Serializable{
                 
         }
     }
+    
+    public void buscarPorCliente(){
+        
+        this.facturas = dao.buscarPorCliente(autenticacionController.getUsuarioLogueado(), clienteBusqueda);
+    }
+    
+    
     public void doBuscarTodos() {
         this.facturas = refrescarLista();
     }
