@@ -39,10 +39,8 @@
                                                itemLabel="#{formaPago.nombre}" />
                             </b:selectOneMenu>
                              
-                            <!--acabar-->
                             <h:outputLabel value="Cliente" for="cliente"/>
-                            <b:selectOneMenu id="cliente" onchange="submit()">
-                                        <f:ajax listener="#{facturasController.valueChangeMethod(cliente)}"/>
+                            <b:selectOneMenu id="cliente" value="#{facturasController.facturaActual.cliente}">
                                         <f:selectItems var="cliente" value="#{facturasController.getClientes()}" 
                                                        itemLabel="#{cliente.nombre}, #{cliente.nif}" 
                                                        itemValue="#{cliente}"/>

@@ -166,18 +166,6 @@ public class FacturasControler implements Serializable{
         this.facturas = refrescarLista();
     }
     
-    
-    //acabar
-    public void valueChangeMethod(ValueChangeEvent e){
-        try{
-        Cliente cliente = (Cliente) e.getNewValue();
-        facturaActual.setNombreCliente(cliente.getNombre());
-        facturaActual.setNifCliente(cliente.getNif());
-        }catch(NullPointerException  ec){
-            
-        }
-	}
-    
     public List<Cliente> getClientes(){
         return clienteDao.buscarTodosConPropietario(autenticacionController.getUsuarioLogueado());
     }
@@ -189,7 +177,6 @@ public class FacturasControler implements Serializable{
     public void doNuevo() {
         this.esNuevo = true;
         this.facturaActual = new Factura();
-        //this.facturaActual.setNumeroDeFactura((long) dao.maxNumeroDeFactura()+1);//nuevo numero de factura
         this.facturaActual.setFecha(Calendar.getInstance().getTime());
         this.facturaActual.setEstado(EstadoFactura.EMITIDA);
         this.facturaActual.setPropietario(autenticacionController.getUsuarioLogueado());

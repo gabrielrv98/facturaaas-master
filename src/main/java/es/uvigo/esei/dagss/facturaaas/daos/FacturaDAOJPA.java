@@ -71,12 +71,6 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
         return query.getResultList();
     }
     
-    @Override
-    public long maxNumeroDeFactura(){
-        Query query = em.createNativeQuery("SELECT MAX(NUMERODEFACTURA) FROM Factura");
-        return (long) query.getResultList().get(0);
-        //return query.getFirstResult();
-    }
     
     
     
