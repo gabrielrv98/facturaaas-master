@@ -31,17 +31,23 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     }
     
     @Override
-    public Factura buscarPorNumeroDeFactura(Usuario propietario,String numeroDeFactura) {
+    public List<Factura> buscarPorNumeroDeFactura(Usuario propietario,String numeroDeFactura) {
+        
+        long nFactura;
+        try{
+             nFactura = Long.parseLong(numeroDeFactura);
+        }catch(NumberFormatException exc){
+            nFactura = -1;
+        }
         TypedQuery<Factura> query = 
                 em.createQuery("SELECT u "
                         + "FROM Factura AS u "
                         + "WHERE u.numeroDeFactura = :numeroDeFactura AND u.propietario.id = :idPropietario", Factura.class);
-        query.setParameter("numeroDeFactura", numeroDeFactura);
+        query.setParameter("numeroDeFactura", nFactura);
         query.setParameter("idPropietario", propietario.getId());
-        
         List<Factura> resultados = query.getResultList();
         if ((resultados != null) && (!resultados.isEmpty())) {
-            return resultados.get(0);
+            return resultados;
         }
         return null;  // No encontrado
     }
@@ -50,8 +56,8 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     public List<Factura> buscarPorFecha(Usuario propietario,Date fecha) {
         TypedQuery<Factura> query = em.createQuery("SELECT u "
                 + "FROM Factura AS u "
-                + "WHERE u.fecha = :fecha AND u.propietario.id = :idPropietario", Factura.class);
-        query.setParameter("fecha", fecha);
+                + "WHERE u.fecha LIKE :fechaTime AND u.propietario.id = :idPropietario", Factura.class);
+        query.setParameter("fechaTime", fecha);
         query.setParameter("idPropietario", propietario.getId());
         return query.getResultList();
     }
@@ -65,11 +71,6 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
         return query.getResultList();
     }
     
-    @Override
-    public int maxNumeroDeFactura(){
-        Query query = em.createNativeQuery("SELECT MAX(NUMERODEFACTURA) FROM Factura");
-        return query.getFirstResult();
-    }
     
     
     
