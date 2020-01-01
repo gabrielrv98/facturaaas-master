@@ -99,8 +99,15 @@
                             <b:commandButton id="botonEditar" icon-awesome="pencil" tooltip="Editar Factura" ajax="true" 
                                              actionListener="#{facturasController.doEditar(factura)}" 
                                              update=":formularioEditar"
-                                             oncomplete="$('.modal-editar-class').modal('show')"/>                                                                                                                    
-                        </b:dataTableColumn>                            
+                                             oncomplete="$('.modal-editar-class').modal('show')"/>       
+                            
+                            <b:commandButton id="botonDetalle" icon-awesome="eye" tooltip="Ver Factura" ajax="true" 
+                                             actionListener="#{facturasController.doVer(factura)}" 
+                                             update=":formularioEditar"
+                                             oncomplete="$('.modal-editar-class').modal('show')"/>  
+                            
+                            <b:navCommandLink value="Mis FactDetalle2" outcome="/usuario/facturas/detalle_factura.xhtml" iconAwesome="eye"/>
+                        </b:dataTableColumn>
                     </b:dataTable>
 
                     <f:facet name="footer">     <!-- no se si tooltip esta bien -->

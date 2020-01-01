@@ -35,9 +35,12 @@ public class LineaFacturaController implements Serializable {
     
     @Inject
     private AutenticacionController autenticacionController;
-
+    
     @Inject
     private DatosFacturacionDAO dfDao;
+    
+    @Inject
+    private FacturasController facturasC;
     
     public Factura getFactura() {
         return factura;
@@ -81,9 +84,14 @@ public class LineaFacturaController implements Serializable {
     
     @PostConstruct
     public void cargaInicial() {
+        cargaFactura();
         this.lineas = refrescarLista();
         this.lineaActual = null;
         this.esNuevo = false;
+    }
+    
+    private void cargaFactura(){
+        this.factura = facturasC.getFacturaActual();
     }
     
     public void doBuscarTodos() {

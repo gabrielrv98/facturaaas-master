@@ -26,7 +26,7 @@ import javax.inject.Named;
 
 @Named(value = "facturasController")
 @ViewScoped
-public class FacturasControler implements Serializable{
+public class FacturasController implements Serializable{
     
     private List<Factura> facturas;
     private Factura facturaActual;//se usa cuando se crea una nueva factura o se edta una.
@@ -217,6 +217,10 @@ public class FacturasControler implements Serializable{
         this.facturaActual = factura;
     }
 
+    public void doVer(Factura factura) {
+        this.esNuevo = false;
+        this.facturaActual = factura;
+    }
 
     public void doGuardarEditado() {
         if (this.esNuevo) {

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author OrenadorOmega
+ * @author grvidal
  */
 public interface LineaFacturaDAO extends GenericoDAO<LineaFactura, Long> {
     public List<LineaFactura> buscarTodasLineaFacturas(Long numeroFactura);
