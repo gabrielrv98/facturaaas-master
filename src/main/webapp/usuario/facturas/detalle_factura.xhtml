@@ -28,7 +28,7 @@
 
 
                     <b:dataTable id="tablaListado"  class="tablaListadoClass"
-                                 value="#{lineaFacturaController.facturas}"
+                                 value="#{lineaFacturaController.factura}"
                                  var="factura" 
                                  striped="true" 
                                  page-length="10" searching="false">
@@ -81,82 +81,44 @@
         
          <h:form id="formularioListado">     
             <b:container fluid="true">
-                <b:panel title="Listado de Lineas de factura2" collapsible="false" offset="1" span="9">
-                    <b:panelGrid columns="2" col-spans="6,2,2,2">
-                        <b:inputText value="#{lineaFacturaController.textoBusqueda}" />
-                        <b:commandButton value="Buscar por numero."  
-                                         actionListener="#{lineaFacturaController.doBuscarPorNumeroDeFactura()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        <b:commandButton value="Buscar por fecha."  
-                                         actionListener="#{lineaFacturaController.doBuscarPorFecha()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        <b:commandButton value="Buscar por estado."  
-                                         actionListener="#{lineaFacturaController.doBuscarPorEstado()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        <b:commandButton value="Buscar Todos."  
-                                         actionListener="#{lineaFacturaController.doBuscarTodos()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        
-                        <h:outputLabel value="Cliente" for="cliente"/>
-                        <b:selectOneMenu id="cliente" value="#{lineaFacturaController.clienteBusqueda}" >
-                                        <f:selectItems var="cliente" value="#{lineaFacturaController.getClientes()}" 
-                                                       itemLabel="#{cliente.nombre}, #{cliente.nif}" 
-                                                       itemValue="#{cliente}"/>
-                        </b:selectOneMenu>
-                        
-                        <b:commandButton value="Buscar por cliente."  
-                                         actionListener="#{lineaFacturaController.buscarPorCliente()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        
-                    </b:panelGrid>
-
-
+                <b:panel title="Listado de Lineas de factura" collapsible="false" offset="1" span="9">
+                    
                     <b:dataTable id="tablaListado"  class="tablaListadoClass"
-                                 value="#{lineaFacturaController.facturas}"
-                                 var="factura" 
+                                 value="#{lineaFacturaController.lineas}"
+                                 var="linea" 
                                  striped="true" 
                                  page-length="10" searching="false">
                         
-                        <b:dataTableColumn label="Nuero de la factura">
-                            <h:outputText value="#{factura.numeroDeFactura}"/>
+                        <b:dataTableColumn label="ID">
+                            <h:outputText value="#{linea.id}"/>
                         </b:dataTableColumn>
                         
-                        <b:dataTableColumn label="Ejercicio">
-                            <h:outputText value="#{factura.ejercicio}" />
+                        <b:dataTableColumn label="Concepto">
+                            <h:outputText value="#{linea.concepto}" />
                         </b:dataTableColumn>                    
                         
-                        <b:dataTableColumn label="Nombre del cliente">
-                            <h:outputText value="#{factura.cliente.nombre}"/>
+                        <b:dataTableColumn label="Cantidad">
+                            <h:outputText value="#{linea.cantidad}"/>
                         </b:dataTableColumn>
 
-                        <b:dataTableColumn label="Nif del cliente">
-                            <h:outputText value="#{factura.cliente.nif}"/>
+                        <b:dataTableColumn label="Precio">
+                            <h:outputText value="#{linea.precio}"/>
                         </b:dataTableColumn>
                         
-                        <b:dataTableColumn label="Fecha de emisión">
-                            <h:outputText value="#{factura.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </h:outputText>
+                        <b:dataTableColumn label="Descuento">
+                            <h:outputText value="#{linea.descuento}" />
                         </b:dataTableColumn>                  
 
                         
-                        <b:dataTableColumn label="Forma de pago">
-                            <h:outputText value="#{factura.formaDePago.nombre}, 
-                                          numero de pagos- #{factura.formaDePago.numeroPagos},
-                                          periodicidad- #{factura.formaDePago.periodicidad}" />
+                        <b:dataTableColumn label="Tipo IVA">
+                            <h:outputText value="#{linea.iva.nombre}, 
+                                          - #{linea.iva.porcentaje}%" />
                         </b:dataTableColumn>                    
 
-                        <b:dataTableColumn label="Estado" >
-                            <h:outputText value="#{factura.estado}" />
+                        <b:dataTableColumn label="Total" >
+                            <h:outputText value="#{linea.total}" />
                         </b:dataTableColumn>
 
-                        <b:dataTableColumn label="Comentarios" >
-                            <h:outputText value="#{factura.comentarios}" />
-                        </b:dataTableColumn>
-                        
-                        <b:dataTableColumn label="Importe" >
-                            <h:outputText value="#{factura.importe}" />
-                        </b:dataTableColumn>
 
 
                         <b:dataTableColumn label="" orderable="false">
