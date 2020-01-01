@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/includes/plantilla.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"                
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="menu">
+        <ui:include src="/WEB-INF/includes/menu-usuario.xhtml"/>
+    </ui:define>
+    
+    <ui:define name="tituloPagina">
+        <h1>Detalles</h1>
+    </ui:define>
+
+    <ui:define name="contenido">
+         <h:form id="formularioListado">     
+            
+        </h:form>  
+        
+        <ui:include src="fragmento-editar.xhtml"/>
+    </ui:define>
+    
+    <ui:define name="contenido">
+        <b:container fluid="true">
+                <b:panel title="Detalles de Factura" collapsible="false" offset="1" span="9">
+
+
+                    <b:dataTable id="tablaListado"  class="tablaListadoClass"
+                                 value="#{lineaFacturaController.facturas}"
+                                 var="factura" 
+                                 striped="true" 
+                                 page-length="10" searching="false">
+                        
+                        <b:dataTableColumn label="Nuero de la factura">
+                            <h:outputText value="#{factura.numeroDeFactura}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Ejercicio">
+                            <h:outputText value="#{factura.ejercicio}" />
+                        </b:dataTableColumn>                    
+                        
+                        <b:dataTableColumn label="Nombre del cliente">
+                            <h:outputText value="#{factura.cliente.nombre}"/>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn label="Nif del cliente">
+                            <h:outputText value="#{factura.cliente.nif}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Fecha de emisión">
+                            <h:outputText value="#{factura.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </b:dataTableColumn>                  
+
+                        
+                        <b:dataTableColumn label="Forma de pago">
+                            <h:outputText value="#{factura.formaDePago.nombre}, 
+                                          numero de pagos- #{factura.formaDePago.numeroPagos},
+                                          periodicidad- #{factura.formaDePago.periodicidad}" />
+                        </b:dataTableColumn>                    
+
+                        <b:dataTableColumn label="Estado" >
+                            <h:outputText value="#{factura.estado}" />
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn label="Comentarios" >
+                            <h:outputText value="#{factura.comentarios}" />
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Importe" >
+                            <h:outputText value="#{factura.importe}" />
+                        </b:dataTableColumn>
+                      
+                    </b:dataTable>
+
+                </b:panel>
+            </b:container>
+        
+         <h:form id="formularioListado">     
+            <b:container fluid="true">
+                <b:panel title="Listado de Lineas de factura2" collapsible="false" offset="1" span="9">
+                    <b:panelGrid columns="2" col-spans="6,2,2,2">
+                        <b:inputText value="#{lineaFacturaController.textoBusqueda}" />
+                        <b:commandButton value="Buscar por numero."  
+                                         actionListener="#{lineaFacturaController.doBuscarPorNumeroDeFactura()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar por fecha."  
+                                         actionListener="#{lineaFacturaController.doBuscarPorFecha()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar por estado."  
+                                         actionListener="#{lineaFacturaController.doBuscarPorEstado()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar Todos."  
+                                         actionListener="#{lineaFacturaController.doBuscarTodos()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        
+                        <h:outputLabel value="Cliente" for="cliente"/>
+                        <b:selectOneMenu id="cliente" value="#{lineaFacturaController.clienteBusqueda}" >
+                                        <f:selectItems var="cliente" value="#{lineaFacturaController.getClientes()}" 
+                                                       itemLabel="#{cliente.nombre}, #{cliente.nif}" 
+                                                       itemValue="#{cliente}"/>
+                        </b:selectOneMenu>
+                        
+                        <b:commandButton value="Buscar por cliente."  
+                                         actionListener="#{lineaFacturaController.buscarPorCliente()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        
+                    </b:panelGrid>
+
+
+                    <b:dataTable id="tablaListado"  class="tablaListadoClass"
+                                 value="#{lineaFacturaController.facturas}"
+                                 var="factura" 
+                                 striped="true" 
+                                 page-length="10" searching="false">
+                        
+                        <b:dataTableColumn label="Nuero de la factura">
+                            <h:outputText value="#{factura.numeroDeFactura}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Ejercicio">
+                            <h:outputText value="#{factura.ejercicio}" />
+                        </b:dataTableColumn>                    
+                        
+                        <b:dataTableColumn label="Nombre del cliente">
+                            <h:outputText value="#{factura.cliente.nombre}"/>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn label="Nif del cliente">
+                            <h:outputText value="#{factura.cliente.nif}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Fecha de emisión">
+                            <h:outputText value="#{factura.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </b:dataTableColumn>                  
+
+                        
+                        <b:dataTableColumn label="Forma de pago">
+                            <h:outputText value="#{factura.formaDePago.nombre}, 
+                                          numero de pagos- #{factura.formaDePago.numeroPagos},
+                                          periodicidad- #{factura.formaDePago.periodicidad}" />
+                        </b:dataTableColumn>                    
+
+                        <b:dataTableColumn label="Estado" >
+                            <h:outputText value="#{factura.estado}" />
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn label="Comentarios" >
+                            <h:outputText value="#{factura.comentarios}" />
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Importe" >
+                            <h:outputText value="#{factura.importe}" />
+                        </b:dataTableColumn>
+
+
+                        <b:dataTableColumn label="" orderable="false">
+                            <b:commandButton id="botonEditar" icon-awesome="pencil" tooltip="Editar Factura" ajax="true" 
+                                             actionListener="#{lineaFacturaController.doEditar(factura)}" 
+                                             update=":formularioEditar"
+                                             oncomplete="$('.modal-editar-class').modal('show')"/>                                                                                                                    
+                        </b:dataTableColumn>                            
+                    </b:dataTable>
+
+                    <f:facet name="footer">     <!-- no se si tooltip esta bien -->
+                        <b:commandButton id="botonNuevo" icon-awesome="plus" value="Crear Factura" tooltip="Nuevo Cliente" ajax="true"
+                                         actionListener="#{lineaFacturaController.doNuevo()}" 
+                                         update=":formularioEditar"
+                                         oncomplete="$('.modal-editar-class').modal('show')"/>
+                    </f:facet>
+                </b:panel>
+            </b:container>
+        </h:form>  
+        
+        <ui:include src="fragmento-editar.xhtml"/>
+    </ui:define>  
+    
+    
+    
+</ui:composition>
