@@ -5,6 +5,7 @@
  */
 package es.uvigo.esei.dagss.facturaaas.daos;
 
+import es.uvigo.esei.dagss.facturaaas.entidades.Cliente;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
@@ -59,6 +60,7 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
                 + "WHERE u.fecha LIKE :fechaTime AND u.propietario.id = :idPropietario", Factura.class);
         query.setParameter("fechaTime", fecha);
         query.setParameter("idPropietario", propietario.getId());
+        
         return query.getResultList();
     }
 
@@ -71,6 +73,14 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
         return query.getResultList();
     }
     
+    @Override
+    public List<Factura> buscarPorCliente(Usuario propietario, Cliente cliente){
+        TypedQuery<Factura> query = em.createQuery("SELECT u FROM Factura AS u  "
+                + "WHERE u.cliente.id = :idCliente AND u.propietario.id = :idPropietario", Factura.class);
+        query.setParameter("idCliente", cliente.getId());
+        query.setParameter("idPropietario", propietario.getId());
+        return query.getResultList();
+    }
     
     
     
