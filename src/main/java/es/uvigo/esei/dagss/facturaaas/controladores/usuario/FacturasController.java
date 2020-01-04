@@ -6,14 +6,19 @@
 package es.uvigo.esei.dagss.facturaaas.controladores.usuario;
 
 import es.uvigo.esei.dagss.facturaaas.controladores.AutenticacionController;
+import es.uvigo.esei.dagss.facturaaas.daos.ClienteDAO;
 import es.uvigo.esei.dagss.facturaaas.daos.DatosFacturacionDAO;
 import es.uvigo.esei.dagss.facturaaas.daos.FacturaDAO;
+import es.uvigo.esei.dagss.facturaaas.daos.FormaPagoDAO;
+import es.uvigo.esei.dagss.facturaaas.entidades.Cliente;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
+import es.uvigo.esei.dagss.facturaaas.entidades.FormaPago;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,22 +26,32 @@ import javax.inject.Named;
 
 @Named(value = "facturasController")
 @ViewScoped
-public class FacturasControler implements Serializable{
+public class FacturasController implements Serializable{
     
     private List<Factura> facturas;
     private Factura facturaActual;//se usa cuando se crea una nueva factura o se edta una.
     private boolean esNuevo;
     private String textoBusqueda;
 
+    
+    private EstadoFactura[] estadosFactura = EstadoFactura.values();
    
     @Inject
     private FacturaDAO dao;
     
     @Inject
     private DatosFacturacionDAO DFdao;
+    
+    @Inject
+    private FormaPagoDAO FPdao;
+    
+    @Inject
+    private ClienteDAO clienteDao;
 
     @Inject
     private AutenticacionController autenticacionController;
+    
+    private Cliente clienteBusqueda;
 
         
     public List<Factura> getFacturas() {
@@ -70,6 +85,23 @@ public class FacturasControler implements Serializable{
     public void setTextoBusqueda(String textoBusqueda) {
         this.textoBusqueda = textoBusqueda;
     }
+
+    public EstadoFactura[] getEstadosFactura() {
+        return estadosFactura;
+    }
+
+    public void setEstadosFactura(EstadoFactura[] estadosFactura) {
+        this.estadosFactura = estadosFactura;
+    }
+    
+    public Cliente getClienteBusqueda(){
+        return clienteBusqueda;
+    }
+    
+    public void setClienteBusqueda(Cliente cliente){
+        this.clienteBusqueda = cliente;
+    }
+    
     
     
 
@@ -82,7 +114,7 @@ public class FacturasControler implements Serializable{
 
     
     public void doBuscarPorNumeroDeFactura() {
-        this.facturaActual = dao.buscarPorNumeroDeFactura(autenticacionController.getUsuarioLogueado(),
+        this.facturas = dao.buscarPorNumeroDeFactura(autenticacionController.getUsuarioLogueado(),
                 textoBusqueda);
     }
 
@@ -91,12 +123,27 @@ public class FacturasControler implements Serializable{
     public void doBuscarPorFecha() {
         
         //String pattern = "(^\d{1,2}-\d{1,2}-[\d{2}\d{4}]$)";
-        String pattern = "(^[0-9]{1,2}-[0-9]{1,2}-[[0-9]{2}[0-9]{4}]$)";
+        
+        String pattern = "(^[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}$)";
         if (textoBusqueda.matches(pattern)) {
             Calendar date = Calendar.getInstance();
-            String[] fecha =  textoBusqueda.split("-");
+            String[] fecha =  textoBusqueda.split("/");
+            busqueda(date,fecha);
+        } else{
+            pattern = "(^[0-9]{1,2}-[0-9]{1,2}-[0-9]{2,4}$)";
+            if(textoBusqueda.matches(pattern)){
+                Calendar date = Calendar.getInstance();
+                String[] fecha =  textoBusqueda.split("-");
+                busqueda(date,fecha);
             
-            int year = Integer.parseInt(fecha[2]);
+            }else this.facturas = null;
+        }
+        
+    }
+    
+    private void busqueda(Calendar date, String[] fecha){
+        
+        int year = Integer.parseInt(fecha[2]);
             //si el año solo tiene 2 digitos.
             if(year < 100 ){
                 //si el año buscado es menor que los dos ultimos digitos del año actual, se busca 20xx
@@ -114,10 +161,6 @@ public class FacturasControler implements Serializable{
             date.set(Calendar.MONTH, Integer.parseInt(fecha[1]));
             
             this.facturas = dao.buscarPorFecha(autenticacionController.getUsuarioLogueado(), date.getTime());
-        }
-        
-        //la busqueda esta mal hecha, no se como avisar al usuario
-        
     }
     
     public void doBuscarPorEstado(){
@@ -138,24 +181,35 @@ public class FacturasControler implements Serializable{
                     (autenticacionController.getUsuarioLogueado(),EstadoFactura.RECLAMADA);
                 break;
                 
-            default:
-                
-                throw new AssertionError();
         }
     }
+    
+    public void buscarPorCliente(){
+        
+        this.facturas = dao.buscarPorCliente(autenticacionController.getUsuarioLogueado(), clienteBusqueda);
+    }
+    
+    
     public void doBuscarTodos() {
         this.facturas = refrescarLista();
     }
     
+    public List<Cliente> getClientes(){
+        return clienteDao.buscarTodosConPropietario(autenticacionController.getUsuarioLogueado());
+    }
+    
+    public List<FormaPago> listadoFormasPago() {
+        return FPdao.buscarActivas();
+    }
     
     public void doNuevo() {
         this.esNuevo = true;
         this.facturaActual = new Factura();
-        this.facturaActual.setNumeroDeFactura((long) dao.maxNumeroDeFactura()+1);//nuevo numero de factura
         this.facturaActual.setFecha(Calendar.getInstance().getTime());
         this.facturaActual.setEstado(EstadoFactura.EMITIDA);
-        long id = autenticacionController.getUsuarioLogueado().getId();
+        this.facturaActual.setPropietario(autenticacionController.getUsuarioLogueado());
         this.facturaActual.setFormaDePago(DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto());
+        this.facturaActual.setImporte(0);
     }
 
     public void doEditar(Factura factura) {
@@ -163,6 +217,10 @@ public class FacturasControler implements Serializable{
         this.facturaActual = factura;
     }
 
+    public void doVer(Factura factura) {
+        this.esNuevo = false;
+        this.facturaActual = factura;
+    }
 
     public void doGuardarEditado() {
         if (this.esNuevo) {

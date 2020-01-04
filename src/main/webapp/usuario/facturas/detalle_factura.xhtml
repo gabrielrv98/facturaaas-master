@@ -11,44 +11,24 @@
     </ui:define>
     
     <ui:define name="tituloPagina">
-        <h1>Facturas</h1>
+        <h1>Detalles</h1>
     </ui:define>
 
     <ui:define name="contenido">
          <h:form id="formularioListado">     
-            <b:container fluid="true">
-                <b:panel title="Listado de Facturas" collapsible="false" offset="1" span="9">
-                    <b:panelGrid columns="2" col-spans="6,2,2,2">
-                        <b:inputText value="#{facturasController.textoBusqueda}" />
-                        <b:commandButton value="Buscar por numero."  
-                                         actionListener="#{facturasController.doBuscarPorNumeroDeFactura()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        <b:commandButton value="Buscar por fecha."  
-                                         actionListener="#{facturasController.doBuscarPorFecha()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        <b:commandButton value="Buscar por estado."  
-                                         actionListener="#{facturasController.doBuscarPorEstado()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        <b:commandButton value="Buscar Todos."  
-                                         actionListener="#{facturasController.doBuscarTodos()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        
-                        <h:outputLabel value="Cliente" for="cliente"/>
-                        <b:selectOneMenu id="cliente" value="#{facturasController.clienteBusqueda}" >
-                                        <f:selectItems var="cliente" value="#{facturasController.getClientes()}" 
-                                                       itemLabel="#{cliente.nombre}, #{cliente.nif}" 
-                                                       itemValue="#{cliente}"/>
-                        </b:selectOneMenu>
-                        
-                        <b:commandButton value="Buscar por cliente."  
-                                         actionListener="#{facturasController.buscarPorCliente()}"
-                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
-                        
-                    </b:panelGrid>
+            
+        </h:form>  
+        
+        <ui:include src="fragmento-editar.xhtml"/>
+    </ui:define>
+    
+    <ui:define name="contenido">
+        <b:container fluid="true">
+                <b:panel title="Detalles de Factura" collapsible="false" offset="1" span="9">
 
 
                     <b:dataTable id="tablaListado"  class="tablaListadoClass"
-                                 value="#{facturasController.facturas}"
+                                 value="#{lineaFacturaController.factura}"
                                  var="factura" 
                                  striped="true" 
                                  page-length="10" searching="false">
@@ -93,26 +73,65 @@
                         <b:dataTableColumn label="Importe" >
                             <h:outputText value="#{factura.importe}" />
                         </b:dataTableColumn>
+                      
+                    </b:dataTable>
+
+                </b:panel>
+            </b:container>
+        
+         <h:form id="formularioListado">     
+            <b:container fluid="true">
+                <b:panel title="Listado de Lineas de factura" collapsible="false" offset="1" span="9">
+                    
+                    <b:dataTable id="tablaListado"  class="tablaListadoClass"
+                                 value="#{lineaFacturaController.lineas}"
+                                 var="linea" 
+                                 striped="true" 
+                                 page-length="10" searching="false">
+                        
+                        <b:dataTableColumn label="ID">
+                            <h:outputText value="#{linea.id}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Concepto">
+                            <h:outputText value="#{linea.concepto}" />
+                        </b:dataTableColumn>                    
+                        
+                        <b:dataTableColumn label="Cantidad">
+                            <h:outputText value="#{linea.cantidad}"/>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn label="Precio">
+                            <h:outputText value="#{linea.precio}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Descuento">
+                            <h:outputText value="#{linea.descuento}" />
+                        </b:dataTableColumn>                  
+
+                        
+                        <b:dataTableColumn label="Tipo IVA">
+                            <h:outputText value="#{linea.iva.nombre}, 
+                                          - #{linea.iva.porcentaje}%" />
+                        </b:dataTableColumn>                    
+
+                        <b:dataTableColumn label="Total" >
+                            <h:outputText value="#{linea.total}" />
+                        </b:dataTableColumn>
+
 
 
                         <b:dataTableColumn label="" orderable="false">
                             <b:commandButton id="botonEditar" icon-awesome="pencil" tooltip="Editar Factura" ajax="true" 
-                                             actionListener="#{facturasController.doEditar(factura)}" 
+                                             actionListener="#{lineaFacturaController.doEditar(factura)}" 
                                              update=":formularioEditar"
-                                             oncomplete="$('.modal-editar-class').modal('show')"/>       
-                            
-                            <b:commandButton id="botonDetalle" icon-awesome="eye" tooltip="Ver Factura" ajax="true" 
-                                             actionListener="#{facturasController.doVer(factura)}" 
-                                             update=":formularioEditar"
-                                             oncomplete="$('.modal-editar-class').modal('show')"/>  
-                            
-                            <b:navCommandLink value="Mis FactDetalle2" outcome="/usuario/facturas/detalle_factura.xhtml" iconAwesome="eye"/>
-                        </b:dataTableColumn>
+                                             oncomplete="$('.modal-editar-class').modal('show')"/>                                                                                                                    
+                        </b:dataTableColumn>                            
                     </b:dataTable>
 
                     <f:facet name="footer">     <!-- no se si tooltip esta bien -->
                         <b:commandButton id="botonNuevo" icon-awesome="plus" value="Crear Factura" tooltip="Nuevo Cliente" ajax="true"
-                                         actionListener="#{facturasController.doNuevo()}" 
+                                         actionListener="#{lineaFacturaController.doNuevo()}" 
                                          update=":formularioEditar"
                                          oncomplete="$('.modal-editar-class').modal('show')"/>
                     </f:facet>

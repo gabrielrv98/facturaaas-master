@@ -20,6 +20,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+
+/**
+ *
+ * @author grvidal
+ */
 @Entity
 @Table(name = "FACTURA")
 public class Factura implements Serializable{
@@ -29,9 +34,9 @@ public class Factura implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long numeroDeFactura;
 
-    private String nombreCliente;
-    
-    private String nifCliente;
+    @ManyToOne
+    @JoinColumn(name = "CLIENTE_ID")
+    private Cliente cliente;
     
     private String ejercicio;
 
@@ -39,7 +44,7 @@ public class Factura implements Serializable{
     @JoinColumn(name = "USUARIO_ID")
     private Usuario propietario;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date fecha;
     
     @ManyToOne
@@ -60,12 +65,11 @@ public class Factura implements Serializable{
     public Factura() {
     }
 
-    public Factura(Long numeroDeFactura, String nombreCliente, String nifCliente, String ejercicio, 
+    public Factura(Long numeroDeFactura, String nombreCliente, Cliente cliente, String nifCliente, String ejercicio, 
             Usuario propietario, Date fecha, FormaPago formaDePago, EstadoFactura estado, String comentarios,
             float importe, TipoIVA iva) {
         this.numeroDeFactura = numeroDeFactura;
-        this.nombreCliente = nombreCliente;
-        this.nifCliente = nifCliente;
+        this.cliente = cliente;
         this.ejercicio = ejercicio;
         this.propietario = propietario;
         this.fecha = fecha;
@@ -76,20 +80,12 @@ public class Factura implements Serializable{
         this.iva = iva;
     }
 
-    public String getNombreCliente() {
-        return nombreCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
-    }
-
-    public String getNifCliente() {
-        return nifCliente;
-    }
-
-    public void setNifCliente(String nifCliente) {
-        this.nifCliente = nifCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Usuario getPropietario() {
@@ -192,8 +188,7 @@ public class Factura implements Serializable{
     public int hashCodePorContenido() {
         int hash = 7;
         hash = 67 * hash + Objects.hashCode(this.numeroDeFactura);
-        hash = 67 * hash + Objects.hashCode(this.nombreCliente);
-        hash = 67 * hash + Objects.hashCode(this.nifCliente);
+        hash = 67 * hash + Objects.hashCode(this.cliente);
         hash = 67 * hash + Objects.hashCode(this.ejercicio);
         hash = 67 * hash + Objects.hashCode(this.propietario);
         hash = 67 * hash + Objects.hashCode(this.fecha);
@@ -222,10 +217,7 @@ public class Factura implements Serializable{
         if (!Objects.equals(this.ejercicio, other.ejercicio)) {
             return false;
         }
-        if (!Objects.equals(this.nombreCliente, other.nombreCliente)) {
-            return false;
-        }
-        if (!Objects.equals(this.nifCliente, other.nifCliente)) {
+        if (!Objects.equals(this.cliente, other.cliente)) {
             return false;
         }
         if (!Objects.equals(this.propietario, other.propietario)) {
@@ -274,8 +266,10 @@ public class Factura implements Serializable{
 
     @Override
     public String toString() {
-        return "Factura{" + "id=" + numeroDeFactura + ", ejercicio=" + ejercicio + ", cliente=" + nombreCliente + " - "+ nifCliente +", fecha=" + fecha 
-                + ", formaDePago=" + formaDePago.toString() + ", estado=" + estado.toString() + ", comentarios=" + comentarios 
+        return "Factura{" + "id=" + numeroDeFactura + ", ejercicio=" + ejercicio + 
+                ", cliente=" + cliente.toString() + ", fecha=" + fecha 
+                + ", formaDePago=" + formaDePago.toString() + ", estado=" + estado.toString() +
+                ", comentarios=" + comentarios 
                 + ", importe=" + importe + ", tipo iva=" + iva.toString() +'}';
     }
 }
