@@ -131,4 +131,5 @@ public class LineaFacturaController implements Serializable {
     private List<LineaFactura> refrescarLista() {
         return dao.buscarTodasLineaFacturas(factura.getNumeroDeFactura());
     }
+    
 }
