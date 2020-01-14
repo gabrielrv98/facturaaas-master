@@ -18,7 +18,6 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -192,6 +191,9 @@ public class FacturasController implements Serializable{
     
     public void doBuscarTodos() {
         this.facturas = refrescarLista();
+    }
+    
+    public String verDetalles(Factura factura) {
     }
     
     public List<Cliente> getClientes(){

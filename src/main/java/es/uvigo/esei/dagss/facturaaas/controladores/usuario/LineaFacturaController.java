@@ -24,7 +24,8 @@ import javax.inject.Named;
 @Named(value = "lineaFacturaController")
 @ViewScoped
 public class LineaFacturaController implements Serializable {
-    
+   
+    private Long nFactura;
     private Factura factura;
     private List<LineaFactura> lineas;
     private LineaFactura lineaActual;
@@ -39,11 +40,20 @@ public class LineaFacturaController implements Serializable {
     @Inject
     private DatosFacturacionDAO dfDao;
     
-    @Inject
-    private FacturasController facturasC;
     
+    public Long getNFactura(){
+        return nFactura;
+    }
+    
+    public void setNFactura(Long n){
+        nFactura = n;
+    }
     public Factura getFactura() {
         return factura;
+    }
+    
+    public void showLineas(){
+        lineas = refrescarLista();
     }
 
     public void setFactura(Factura factura) {
@@ -84,15 +94,12 @@ public class LineaFacturaController implements Serializable {
     
     @PostConstruct
     public void cargaInicial() {
-        cargaFactura();
-        this.lineas = refrescarLista();
+       this.lineas = refrescarLista();
         this.lineaActual = null;
         this.esNuevo = false;
     }
     
-    private void cargaFactura(){
-        this.factura = facturasC.getFacturaActual();
-    }
+    
     
     public void doBuscarTodos() {
         this.lineas = refrescarLista();
@@ -129,7 +136,8 @@ public class LineaFacturaController implements Serializable {
     }
     
     private List<LineaFactura> refrescarLista() {
-        return dao.buscarTodasLineaFacturas(factura.getNumeroDeFactura());
+        //return dao.buscarTodasLineaFacturas(factura.getNumeroDeFactura());
+        return dao.buscarTodasLineaFacturas(nFactura);
     }
     
 }

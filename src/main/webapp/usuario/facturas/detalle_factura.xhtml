@@ -1,5 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
+<f:metadata>
+    <f:viewParam name="nFactura" value="#{facturasController.facturaActual.numeroDeFactura}" />
+</f:metadata>
 <ui:composition template="/WEB-INF/includes/plantilla.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"                
@@ -28,51 +31,43 @@
 
 
                     <b:dataTable id="tablaListado"  class="tablaListadoClass"
-                                 value="#{lineaFacturaController.factura}"
-                                 var="factura" 
+                                 value="#{lineaFacturaController.lineas}"
+                                 var="linea" 
                                  striped="true" 
                                  page-length="10" searching="false">
                         
                         <b:dataTableColumn label="Nuero de la factura">
-                            <h:outputText value="#{factura.numeroDeFactura}"/>
+                            <h:outputText value="#{linea.numeroDeFactura}"/>
                         </b:dataTableColumn>
                         
-                        <b:dataTableColumn label="Ejercicio">
-                            <h:outputText value="#{factura.ejercicio}" />
+                        <b:dataTableColumn label="Concepto">
+                            <h:outputText value="#{linea.concepto}" />
                         </b:dataTableColumn>                    
                         
-                        <b:dataTableColumn label="Nombre del cliente">
-                            <h:outputText value="#{factura.cliente.nombre}"/>
+                        <b:dataTableColumn label="Cantidad">
+                            <h:outputText value="#{linea.cantidad}"/>
                         </b:dataTableColumn>
 
-                        <b:dataTableColumn label="Nif del cliente">
-                            <h:outputText value="#{factura.cliente.nif}"/>
+                        <b:dataTableColumn label="Precio">
+                            <h:outputText value="#{linea.precio}"/>
                         </b:dataTableColumn>
                         
-                        <b:dataTableColumn label="Fecha de emisión">
-                            <h:outputText value="#{factura.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </h:outputText>
-                        </b:dataTableColumn>                  
+                        <b:dataTableColumn label="Descuento">
+                            <h:outputText value="#{linea.decuento}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Total">
+                            <h:outputText value="#{linea.total}"/>
+                        </b:dataTableColumn>
+                                          
 
                         
-                        <b:dataTableColumn label="Forma de pago">
-                            <h:outputText value="#{factura.formaDePago.nombre}, 
-                                          numero de pagos- #{factura.formaDePago.numeroPagos},
-                                          periodicidad- #{factura.formaDePago.periodicidad}" />
+                        <b:dataTableColumn label="Tipo iva">
+                            <h:outputText value="#{linea.iva.nombre}, 
+                                          porcentaje- #{linea.iva.porcentaje}" />
                         </b:dataTableColumn>                    
 
-                        <b:dataTableColumn label="Estado" >
-                            <h:outputText value="#{factura.estado}" />
-                        </b:dataTableColumn>
-
-                        <b:dataTableColumn label="Comentarios" >
-                            <h:outputText value="#{factura.comentarios}" />
-                        </b:dataTableColumn>
                         
-                        <b:dataTableColumn label="Importe" >
-                            <h:outputText value="#{factura.importe}" />
-                        </b:dataTableColumn>
                       
                     </b:dataTable>
 
