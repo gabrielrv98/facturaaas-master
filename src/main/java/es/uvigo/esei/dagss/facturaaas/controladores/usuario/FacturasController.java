@@ -18,7 +18,6 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,7 +25,7 @@ import javax.inject.Named;
 
 @Named(value = "facturasController")
 @ViewScoped
-public class FacturasControler implements Serializable{
+public class FacturasController implements Serializable{
     
     private List<Factura> facturas;
     private Factura facturaActual;//se usa cuando se crea una nueva factura o se edta una.
@@ -194,6 +193,11 @@ public class FacturasControler implements Serializable{
         this.facturas = refrescarLista();
     }
     
+    public String verDetalles(Factura factura) {
+        return "/detalle_factura.xhtml";
+            //return "/detalle_factura.xhtml?faces-redirect=true&nFactura=" + factura.getNumeroDeFactura();
+    }
+    
     public List<Cliente> getClientes(){
         return clienteDao.buscarTodosConPropietario(autenticacionController.getUsuarioLogueado());
     }
@@ -217,6 +221,10 @@ public class FacturasControler implements Serializable{
         this.facturaActual = factura;
     }
 
+    public void doVer(Factura factura) {
+        this.esNuevo = false;
+        this.facturaActual = factura;
+    }
 
     public void doGuardarEditado() {
         if (this.esNuevo) {

@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
 
 /**
  *
- * @author OrenadorOmega
+ * @author grvidal
  */
 @Stateless
 public class LineaFacturaDAOJPA extends GenericoDAOJPA<LineaFactura, Long> implements LineaFacturaDAO {
