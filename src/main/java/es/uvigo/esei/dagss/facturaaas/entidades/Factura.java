@@ -83,7 +83,15 @@ public class Factura implements Serializable{
     public Cliente getCliente() {
         return cliente;
     }
-
+    
+    public String getNombreCliente() {
+        return this.cliente.getNombre();
+    }
+    
+    public String getNifCliente() {
+        return this.cliente.getNombre();
+    }
+    
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }

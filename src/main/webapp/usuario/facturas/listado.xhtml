@@ -101,12 +101,12 @@
                                              update=":formularioEditar"
                                              oncomplete="$('.modal-editar-class').modal('show')"/>       
                             
-                            <b:commandButton id="botonDetalle" icon-awesome="eye" tooltip="Ver Factura" ajax="true" 
-                                             actionListener="#{facturasController.doVer(factura)}" 
-                                             update=":formularioEditar"
-                                             oncomplete="$('.modal-editar-class').modal('show')"/>  
                             
-                            <b:navCommandLink value="Mis FactDetalle2" outcome="/usuario/facturas/detalle_factura.xhtml" iconAwesome="eye"/>
+                            
+                            <b:commandButton id="botonDetalle2" icon-awesome="eye"  tooltip="Ver lineas de factura"
+                                             actionListener="#{facturasController.verDetalles(factura)}" />  
+                            
+                            
                         </b:dataTableColumn>
                     </b:dataTable>
 
