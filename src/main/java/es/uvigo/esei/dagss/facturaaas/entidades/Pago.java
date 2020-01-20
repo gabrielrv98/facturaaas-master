@@ -28,9 +28,11 @@ public class Pago implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;//hace referencia a NUMERODEFACTURA
     
-    
-    private Long numeroDeFactura;//hace referencia a NUMERODEFACTURA
+    @ManyToOne
+    @JoinColumn(name = "FACTURA_ID")
+    private Long numeroDeFactura;
     
     @ManyToOne
     @JoinColumn(name = "CLIENTE_ID")
@@ -39,6 +41,10 @@ public class Pago implements Serializable{
     @ManyToOne
     @JoinColumn(name = "USUARIO_ID")
     private Usuario propietario;
+
+    public Long getId() {
+        return id;
+    }
   
     
     private int importe;
@@ -195,7 +201,7 @@ public class Pago implements Serializable{
             return false;
         }
         final Pago other = (Pago) obj;
-        if (!Objects.equals(this.numeroDeFactura, other.numeroDeFactura)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
