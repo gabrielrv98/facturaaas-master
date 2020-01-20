@@ -26,14 +26,14 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
 
     @Override
     public List<Pago> buscarPagosDeCliente(Usuario propietario) {
-        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.idCliente = :propietario", Pago.class);
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.cliente.id = :propietario", Pago.class);
         query.setParameter("propietario", propietario.getId());
         return query.getResultList();
     }
 
     @Override
     public Pago buscarPorNumeroDeFactura(Usuario propietario, Long numeroDeFactura) {
-        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.idCliente = :idpropietario "
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.cliente.id = :idpropietario "
                 + "AND u.numeroDeFactura = :numeroDeFactura", Pago.class);
         query.setParameter("idpropietario", propietario.getId());
         query.setParameter("numeroDeFactura", numeroDeFactura);
@@ -55,7 +55,7 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
     @Override
     public List<Pago> buscarPorEstado(Usuario propietario,EstadoPago estado) {
         TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u  "
-                + "WHERE u.estado = :estado AND u.idCliente = :idPropietario", Pago.class);
+                + "WHERE u.estado = :estado AND u.cliente.id = :idPropietario", Pago.class);
         query.setParameter("estado", estado);
         query.setParameter("idPropietario", propietario.getId());
         return query.getResultList();

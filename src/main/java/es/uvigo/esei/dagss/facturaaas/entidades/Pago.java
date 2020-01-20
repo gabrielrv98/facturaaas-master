@@ -32,11 +32,14 @@ public class Pago implements Serializable{
   
     private Long numeroDeFactura;//hace referencia a NUMERODEFACTURA
     
-    private Long idCliente;
-
-    private String nombreCliente;
+    @ManyToOne
+    @JoinColumn(name = "CLIENTE_ID")
+    private Cliente cliente;
     
-    private String nifCliente;
+    @ManyToOne
+    @JoinColumn(name = "USUARIO_ID")
+    private Usuario propietario;
+  
     
     private int importe;
 
@@ -51,14 +54,12 @@ public class Pago implements Serializable{
     public Pago() {
     }
 
-    public Pago(Long numeroDeFactura,  Long idCliente,String nombreCliente, String nifCliente, int importe, Date fechavencimiento,
+    public Pago(Long numeroDeFactura,  Cliente cliente, int importe, Date fechavencimiento,
             EstadoPago estado) {
         
         
         this.numeroDeFactura = numeroDeFactura;
-        this.idCliente = idCliente;
-        this.nombreCliente = nombreCliente;
-        this.nifCliente = nifCliente;
+        this.cliente = cliente;
         this.importe = importe;
         this.fechavencimiento = fechavencimiento;
     }
@@ -71,33 +72,14 @@ public class Pago implements Serializable{
         this.numeroDeFactura = numeroDeFactura;
     }
     
-    public Long getidCliente(){
-        return this.idCliente;
+    public void setCliente(Cliente cliente){
+        this.cliente = cliente;
     }
     
-    public void setidCliente(Long idCliente){
-        this.idCliente = idCliente;
+    public Cliente getCliente(){
+        return this.cliente;
     }
-
-    public String getNombreCliente() {
-        return nombreCliente;
-    }
-
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
-    }
-
-    public String getNifCliente() {
-        return nifCliente;
-    }
-
-    public void setNifCliente(String nifCliente) {
-        this.nifCliente = nifCliente;
-    }
-
-    
-    
-
+ 
     public int getImporte() {
         return importe;
     }
@@ -149,8 +131,7 @@ public class Pago implements Serializable{
     public int hashCodePorContenido() {
         int hash = 7;
         hash = 67 * hash + Objects.hashCode(this.numeroDeFactura);
-        hash = 67 * hash + Objects.hashCode(this.nombreCliente);
-        hash = 67 * hash + Objects.hashCode(this.nifCliente);
+        hash = 67 * hash + Objects.hashCode(this.cliente);
         hash = 67 * hash + Objects.hashCode(this.fechavencimiento);
         hash = 67 * hash + Objects.hashCode(this.estado);
         hash = 67 * hash + Objects.hashCode(this.importe);
@@ -171,10 +152,7 @@ public class Pago implements Serializable{
         if (!Objects.equals(this.numeroDeFactura, other.numeroDeFactura)) {
             return false;
         }
-        if (!Objects.equals(this.nombreCliente, other.nombreCliente)) {
-            return false;
-        }
-        if (!Objects.equals(this.nifCliente, other.nifCliente)) {
+        if (!Objects.equals(this.cliente, other.cliente)) {
             return false;
         }
         if (!Objects.equals(this.fechavencimiento, other.fechavencimiento)) {
@@ -210,7 +188,7 @@ public class Pago implements Serializable{
 
     @Override
     public String toString() {
-        return "Pago{" + "id=" + numeroDeFactura + ", nombrecliente=" + nombreCliente + ", idcliente=" + nifCliente + ", fecha=" + fechavencimiento 
+        return "Pago{" + "id=" + numeroDeFactura + ", nombrecliente=" + cliente.getNombre() + ", idcliente=" + cliente.getNif() + ", fecha=" + fechavencimiento 
                 +", estado=" + estado + ", importe=" + importe +'}';
     }
 }
