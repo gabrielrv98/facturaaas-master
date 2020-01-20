@@ -31,6 +31,8 @@ public class Pago implements Serializable{
     
   
     private Long numeroDeFactura;//hace referencia a NUMERODEFACTURA
+    
+    private Long idCliente;
 
     private String nombreCliente;
     
@@ -49,11 +51,12 @@ public class Pago implements Serializable{
     public Pago() {
     }
 
-    public Pago(Long numeroDeFactura, String nombreCliente, String nifCliente, int importe, Date fechavencimiento,
+    public Pago(Long numeroDeFactura,  Long idCliente,String nombreCliente, String nifCliente, int importe, Date fechavencimiento,
             EstadoPago estado) {
         
         
         this.numeroDeFactura = numeroDeFactura;
+        this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;
         this.nifCliente = nifCliente;
         this.importe = importe;
@@ -66,6 +69,14 @@ public class Pago implements Serializable{
 
     public void setNumeroDeFactura(Long numeroDeFactura) {
         this.numeroDeFactura = numeroDeFactura;
+    }
+    
+    public Long getidCliente(){
+        return this.idCliente;
+    }
+    
+    public void setidCliente(Long idCliente){
+        this.idCliente = idCliente;
     }
 
     public String getNombreCliente() {

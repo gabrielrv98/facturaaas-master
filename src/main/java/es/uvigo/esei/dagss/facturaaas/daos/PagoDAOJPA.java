@@ -26,14 +26,14 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
 
     @Override
     public List<Pago> buscarPagosDeCliente(Usuario propietario) {
-        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.cliente.propietario = :propietario", Pago.class);
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.idCliente = :propietario", Pago.class);
         query.setParameter("propietario", propietario.getId());
         return query.getResultList();
     }
 
     @Override
     public Pago buscarPorNumeroDeFactura(Usuario propietario, Long numeroDeFactura) {
-        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.cliente.propietario.id = :idpropietario "
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.idCliente = :idpropietario "
                 + "AND u.numeroDeFactura = :numeroDeFactura", Pago.class);
         query.setParameter("idpropietario", propietario.getId());
         query.setParameter("numeroDeFactura", numeroDeFactura);
@@ -46,12 +46,19 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
 
     @Override
     public List<Pago> buscarPorFechaVencimiento(Usuario propietario, Date fechavencimiento) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u  "
+                + "WHERE u.fechavencimiento > :busqueda ", Pago.class);
+        query.setParameter("busqueda", fechavencimiento);
+        return query.getResultList();
     }
 
     @Override
-    public List<Pago> buscarPorEstado(Usuario propietario, EstadoPago estado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Pago> buscarPorEstado(Usuario propietario,EstadoPago estado) {
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u  "
+                + "WHERE u.estado = :estado AND u.idCliente = :idPropietario", Pago.class);
+        query.setParameter("estado", estado);
+        query.setParameter("idPropietario", propietario.getId());
+        return query.getResultList();
     }
 
     
