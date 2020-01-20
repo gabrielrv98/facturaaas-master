@@ -33,9 +33,9 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
 
     @Override
     public Pago buscarPorNumeroDeFactura(Usuario propietario, Long numeroDeFactura) {
-        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.cliente.propietario = :propietario "
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.cliente.propietario.id = :idpropietario "
                 + "AND u.numeroDeFactura = :numeroDeFactura", Pago.class);
-        query.setParameter("propietario", propietario.getId());
+        query.setParameter("idpropietario", propietario.getId());
         query.setParameter("numeroDeFactura", numeroDeFactura);
         List<Pago> resultados = query.getResultList();
         if ((resultados != null) && (!resultados.isEmpty())) {

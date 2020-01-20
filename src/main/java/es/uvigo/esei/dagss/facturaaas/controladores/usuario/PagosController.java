@@ -81,6 +81,10 @@ public class PagosController implements Serializable{
         this.esNuevo = false;
     }
 
+    public void doBuscarPorCliente() {
+        this.pagos = dao.buscarPagosDeCliente(autenticacionController.getUsuarioLogueado());
+        
+    }
     
     public void doBuscarPorNumeroDeFactura() {
         this.pagoAux = dao.buscarPorNumeroDeFactura(autenticacionController.getUsuarioLogueado(),

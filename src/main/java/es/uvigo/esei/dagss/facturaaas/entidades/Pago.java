@@ -14,6 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,6 +28,8 @@ public class Pago implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
+  
     private Long numeroDeFactura;//hace referencia a NUMERODEFACTURA
 
     private String nombreCliente;
@@ -36,9 +39,11 @@ public class Pago implements Serializable{
     private int importe;
 
     @Temporal(TemporalType.TIMESTAMP)
+
     private Date fechavencimiento;
     
     @Enumerated(EnumType.STRING)
+
     private EstadoPago estado;
 
     public Pago() {

@@ -170,13 +170,6 @@ public class Factura implements Serializable{
         this.comentarios = comentarios;
     }
     
-    public String getNombreCliente() {
-        return this.cliente.getNombre();
-    }
-    
-    public String getNifCliente() {
-        return this.cliente.getNif();
-    }
 
 
     //ni idea si hace falta

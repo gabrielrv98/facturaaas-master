@@ -15,7 +15,79 @@
     </ui:define>
 
     <ui:define name="contenido">
-        <h2>Historia de usuario H16</h2>
+         <h:form id="formularioListado">     
+            <b:container fluid="true">
+                <b:panel title="Listado de Pagos" collapsible="false" offset="1" span="9">
+                    <b:panelGrid columns="2" col-spans="6,2,2,2">
+                        <b:inputText value="#{pagosController.textoBusqueda}" />
+                        <b:commandButton value="Buscar pagos por cliente."  
+                                         actionListener="#{pagosController.doBuscarPorCliente()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar por Nº de factura."  
+                                         actionListener="#{pagosController.doBuscarPorNumeroDeFactura()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar por estado."  
+                                         actionListener="#{pagosController.doBuscarPorEstado()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar Todos."  
+                                         actionListener="#{pagosController.doBuscarPorFechaVencimiento()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        
+                        <h:outputLabel value="Cliente" for="cliente"/>
+
+                        
+                        <b:commandButton value="Buscar por cliente."  
+                                         actionListener="#{pagosController.doBuscarPorCliente()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        
+                    </b:panelGrid>
+
+
+                    <b:dataTable id="tablaListado"  class="tablaListadoClass"
+                                 value="#{pagosController.pagos}"
+                                 var="pagos" 
+                                 striped="true" 
+                                 page-length="10" searching="false">
+                        
+                        <b:dataTableColumn label="Nº de pago">
+                            <h:outputText value="#{pago.numeroDePago}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Estado">
+                            <h:outputText value="#{pago.estado}" />
+                        </b:dataTableColumn>                    
+                        
+                        <b:dataTableColumn label="Nombre del cliente">
+                            <h:outputText value="#{pago.nombreCliente}"/>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn label="Nif del cliente">
+                            <h:outputText value="#{pago.nifCliente}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Importe">
+                            <h:outputText value="#{pago.importe}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Fecha Vencimiento">
+                            <h:outputText value="#{pago.fechavencimiento}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </b:dataTableColumn>                  
+
+                    </b:dataTable>
+
+                    //Autogenerado, como hacer?
+                    <f:facet name="footer">     <!-- no se si tooltip esta bien -->
+                        <b:commandButton id="botonNuevo" icon-awesome="plus" value="Crear Pago" tooltip="Nuevo Cliente" ajax="true"
+                                         actionListener="#{pagosController.doNuevo()}" 
+                                         update=":formularioEditar"
+                                         oncomplete="$('.modal-editar-class').modal('show')"/>
+                    </f:facet>
+                </b:panel>
+            </b:container>
+        </h:form>  
+        
     </ui:define>    
     
     

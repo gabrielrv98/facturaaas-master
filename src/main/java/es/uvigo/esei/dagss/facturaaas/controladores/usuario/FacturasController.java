@@ -45,6 +45,9 @@ public class FacturasController implements Serializable{
     private FormaPagoDAO FPdao;
     
     @Inject
+    private PagosController pagosController;
+    
+    @Inject
     private ClienteDAO clienteDao;
 
     @Inject
@@ -214,6 +217,7 @@ public class FacturasController implements Serializable{
         this.facturaActual.setPropietario(autenticacionController.getUsuarioLogueado());
         this.facturaActual.setFormaDePago(DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto());
         this.facturaActual.setImporte(0);
+        this.pagosController.doNuevo(facturaActual);
     }
 
     public void doEditar(Factura factura) {
