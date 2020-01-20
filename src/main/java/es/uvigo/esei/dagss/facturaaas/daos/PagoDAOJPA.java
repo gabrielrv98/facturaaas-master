@@ -5,16 +5,12 @@
  */
 package es.uvigo.esei.dagss.facturaaas.daos;
 
-import es.uvigo.esei.dagss.facturaaas.entidades.Cliente;
-import es.uvigo.esei.dagss.facturaaas.entidades.EstadoFactura;
 import es.uvigo.esei.dagss.facturaaas.entidades.EstadoPago;
-import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import es.uvigo.esei.dagss.facturaaas.entidades.Pago;
 import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -26,7 +22,7 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
 
     @Override
     public List<Pago> buscarPagosDeCliente(Usuario propietario) {
-        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.cliente.id = :propietario", Pago.class);
+        TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u WHERE u.propietario.id = :propietario", Pago.class);
         query.setParameter("propietario", propietario.getId());
         return query.getResultList();
     }
@@ -60,6 +56,4 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
         query.setParameter("idPropietario", propietario.getId());
         return query.getResultList();
     }
-
-    
 }

@@ -149,6 +149,7 @@ public class PagosController implements Serializable{
         this.pagoAux.setNumeroDeFactura(factura.getNumeroDeFactura());//nuevo numero de factura
         this.pagoAux.setCliente(factura.getCliente());
         this.pagoAux.setEstado(EstadoPago.PENDIENTE);
+        this.pagoAux.setPropietario(factura.getPropietario());
 
     }
 

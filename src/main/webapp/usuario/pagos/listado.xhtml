@@ -76,14 +76,7 @@
                         </b:dataTableColumn>                  
 
                     </b:dataTable>
-
-                    //Autogenerado, como hacer?
-                    <f:facet name="footer">     <!-- no se si tooltip esta bien -->
-                        <b:commandButton id="botonNuevo" icon-awesome="plus" value="Crear Pago" tooltip="Nuevo Cliente" ajax="true"
-                                         actionListener="#{pagosController.doNuevo()}" 
-                                         update=":formularioEditar"
-                                         oncomplete="$('.modal-editar-class').modal('show')"/>
-                    </f:facet>
+                    
                 </b:panel>
             </b:container>
         </h:form>  

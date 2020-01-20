@@ -55,14 +55,25 @@ public class Pago implements Serializable{
     }
 
     public Pago(Long numeroDeFactura,  Cliente cliente, int importe, Date fechavencimiento,
-            EstadoPago estado) {
+            EstadoPago estado, Usuario propietario) {
         
         
         this.numeroDeFactura = numeroDeFactura;
         this.cliente = cliente;
         this.importe = importe;
         this.fechavencimiento = fechavencimiento;
+        this.propietario = propietario;
     }
+
+    public Usuario getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Usuario propietario) {
+        this.propietario = propietario;
+    }
+    
+    
 
     public Long getNumeroDeFactura() {
         return numeroDeFactura;
@@ -135,6 +146,7 @@ public class Pago implements Serializable{
         hash = 67 * hash + Objects.hashCode(this.fechavencimiento);
         hash = 67 * hash + Objects.hashCode(this.estado);
         hash = 67 * hash + Objects.hashCode(this.importe);
+        hash = 67 * hash + Objects.hashCode(this.propietario);
         return hash;
     }
 
@@ -156,6 +168,9 @@ public class Pago implements Serializable{
             return false;
         }
         if (!Objects.equals(this.fechavencimiento, other.fechavencimiento)) {
+            return false;
+        }
+        if (!Objects.equals(this.propietario, other.propietario)) {
             return false;
         }
         
