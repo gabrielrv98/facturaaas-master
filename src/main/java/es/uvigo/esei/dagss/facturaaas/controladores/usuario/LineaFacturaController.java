@@ -32,6 +32,9 @@ public class LineaFacturaController implements Serializable {
     private boolean esNuevo;
     
     @Inject
+    private FacturasController fact;
+    
+    @Inject
     private LineaFacturaDAO dao;
     
     @Inject
@@ -94,6 +97,7 @@ public class LineaFacturaController implements Serializable {
     
     @PostConstruct
     public void cargaInicial() {
+        this.nFactura= fact.getFacturaActual().getNumeroDeFactura();
        this.lineas = refrescarLista();
         this.lineaActual = null;
         this.esNuevo = false;
@@ -136,7 +140,6 @@ public class LineaFacturaController implements Serializable {
     }
     
     private List<LineaFactura> refrescarLista() {
-        //return dao.buscarTodasLineaFacturas(factura.getNumeroDeFactura());
         return dao.buscarTodasLineaFacturas(nFactura);
     }
     
