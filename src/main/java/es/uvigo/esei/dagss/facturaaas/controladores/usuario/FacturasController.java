@@ -194,6 +194,8 @@ public class FacturasController implements Serializable{
     }
     
     public String verDetalles(Factura factura) {
+        return "detalle_factura";
+        //return "/detalle_factura.xhtml?faces-redirect=true&nFactura=" + factura.getNumeroDeFactura();
     }
     
     public List<Cliente> getClientes(){
