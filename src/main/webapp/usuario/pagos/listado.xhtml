@@ -60,13 +60,9 @@
                         <b:dataTableColumn label="Estado">
                             <h:outputText value="#{pago.estado}" />
                         </b:dataTableColumn>                    
-                        
-                        <b:dataTableColumn label="Nombre del cliente">
-                            <h:outputText value="#{pago.nombreCliente}"/>
-                        </b:dataTableColumn>
 
-                        <b:dataTableColumn label="Nif del cliente">
-                            <h:outputText value="#{pago.nifCliente}"/>
+                        <b:dataTableColumn label="Cliente">
+                            <h:outputText value="#{pago.cliente.nombre} - #{pago.cliente.nif}" />
                         </b:dataTableColumn>
                         
                         <b:dataTableColumn label="Importe">

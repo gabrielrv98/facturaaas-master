@@ -30,8 +30,6 @@ public class Pago implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;//hace referencia a NUMERODEFACTURA
     
-    @ManyToOne
-    @JoinColumn(name = "FACTURA_ID")
     private Long numeroDeFactura;
     
     @ManyToOne
