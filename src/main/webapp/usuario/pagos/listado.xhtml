@@ -34,10 +34,14 @@
                                          update=":formularioListado:tablaListado :mensajesGlobal"/>
                         
                         <h:outputLabel value="Cliente" for="cliente"/>
-
+                        <b:selectOneMenu id="cliente" value="#{facturasController.clienteBusqueda}" >
+                                        <f:selectItems var="cliente" value="#{facturasController.getClientes()}" 
+                                                       itemLabel="#{cliente.nombre}, #{cliente.nif}" 
+                                                       itemValue="#{cliente}"/>
+                        </b:selectOneMenu>
                         
                         <b:commandButton value="Buscar por cliente."  
-                                         actionListener="#{pagosController.doBuscarPorCliente()}"
+                                         actionListener="#{PagosController.doBuscarPorCliente()}"
                                          update=":formularioListado:tablaListado :mensajesGlobal"/>
                         
                     </b:panelGrid>
