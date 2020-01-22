@@ -33,6 +33,7 @@
                                          actionListener="#{pagosController.doBuscarPorFechaVencimiento()}"
                                          update=":formularioListado:tablaListado :mensajesGlobal"/>
                         
+                        
                         <h:outputLabel value="Cliente" for="cliente"/>
                         <b:selectOneMenu id="cliente" value="#{facturasController.clienteBusqueda}" >
                                         <f:selectItems var="cliente" value="#{facturasController.getClientes()}" 
@@ -55,6 +56,10 @@
                         
                         <b:dataTableColumn label="Nº de pago">
                             <h:outputText value="#{pago.id}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Nº de factura">
+                            <h:outputText value="#{pago.numeroDeFactura}"/>
                         </b:dataTableColumn>
                         
                         <b:dataTableColumn label="Estado">

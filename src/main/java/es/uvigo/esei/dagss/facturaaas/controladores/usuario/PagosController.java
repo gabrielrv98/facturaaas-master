@@ -13,6 +13,8 @@ import es.uvigo.esei.dagss.facturaaas.entidades.Pago;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -25,7 +27,8 @@ import javax.inject.Named;
 public class PagosController implements Serializable{
     
     private List<Pago> pagos;
-    private Pago pagoAux;//se usa cuando se crea una nueva factura o se edta una.
+    private Pago pagoAux;//se usa cuando se crea una nueva factura o se edta una
+    private List<Pago> pagosFactura;
     private boolean esNuevo;
     private String textoBusqueda;
 
@@ -145,13 +148,27 @@ public class PagosController implements Serializable{
     
     public void doNuevo(Factura factura) {
         this.esNuevo = true;
-        this.pagoAux = new Pago();
-        this.pagoAux.setNumeroDeFactura(factura.getNumeroDeFactura());//nuevo numero de factura
-        this.pagoAux.setCliente(factura.getCliente());
-        this.pagoAux.setEstado(EstadoPago.PENDIENTE);
-        this.pagoAux.setPropietario(factura.getPropietario());
-
+        this.pagosFactura = new LinkedList<>();
+        Integer periodicidad = factura.getFormaDePago().getPeriodicidad();
+        Integer nPagos = factura.getFormaDePago().getNumeroPagos();
+            for (int i = 0; i < nPagos; i++){
+                this.pagoAux = new Pago();
+                this.pagoAux.setNumeroDeFactura(factura.getNumeroDeFactura());//nuevo numero de factura
+                this.pagoAux.setCliente(factura.getCliente());
+                this.pagoAux.setEstado(EstadoPago.PENDIENTE);
+                this.pagoAux.setPropietario(factura.getPropietario());
+                this.pagoAux.setFechavencimiento(sumarRestarDiasFecha(factura.getFecha(), factura.getFormaDePago().getPeriodicidad() * i));
+                this.pagoAux.setImporte((int)factura.getImporte() / factura.getFormaDePago().getNumeroPagos());
+                this.pagosFactura.add(pagoAux);
+            }
     }
+    
+     private Date sumarRestarDiasFecha(Date fecha, Integer dias){
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(fecha); // Configuramos la fecha que se recibe
+      calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
+      return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+ }
 
     public void doEditar(Pago pago) {
         this.esNuevo = false;
@@ -161,7 +178,10 @@ public class PagosController implements Serializable{
 
     public void doGuardarEditado() {
         if (this.esNuevo) {
-            dao.crear(pagoAux);
+            while (pagosFactura != null && !pagosFactura.isEmpty()){
+                dao.crear(pagosFactura.get(0));
+                pagosFactura.remove(0);
+            }
         } else {
             dao.actualizar(pagoAux);
         }

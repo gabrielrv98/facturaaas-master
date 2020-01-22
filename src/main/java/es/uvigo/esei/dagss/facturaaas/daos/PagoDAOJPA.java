@@ -51,7 +51,7 @@ public class PagoDAOJPA extends GenericoDAOJPA<Pago, Long> implements PagoDAO{
     @Override
     public List<Pago> buscarPorEstado(Usuario propietario,EstadoPago estado) {
         TypedQuery<Pago> query = em.createQuery("SELECT u FROM Pago AS u  "
-                + "WHERE u.estado = :estado AND u.cliente.id = :idPropietario", Pago.class);
+                + "WHERE u.estado = :estado AND u.propietario.id = :idPropietario", Pago.class);
         query.setParameter("estado", estado);
         query.setParameter("idPropietario", propietario.getId());
         return query.getResultList();

@@ -217,7 +217,6 @@ public class FacturasController implements Serializable{
         this.facturaActual.setPropietario(autenticacionController.getUsuarioLogueado());
         this.facturaActual.setFormaDePago(DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto());
         this.facturaActual.setImporte(0);
-        this.pagosController.doNuevo(facturaActual);
     }
 
     public void doEditar(Factura factura) {
@@ -233,6 +232,9 @@ public class FacturasController implements Serializable{
     public void doGuardarEditado() {
         if (this.esNuevo) {
             dao.crear(facturaActual);
+            pagosController.doNuevo(facturaActual);
+            
+            
         } else {
             dao.actualizar(facturaActual);
         }
