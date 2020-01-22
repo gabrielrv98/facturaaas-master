@@ -28,7 +28,7 @@ import javax.inject.Named;
 @ViewScoped
 public class LineaFacturaController implements Serializable {
    
-    private Long nFactura;
+    private Factura factura;
     private List<LineaFactura> lineas;
     private LineaFactura lineaActual;
     private boolean esNuevo;
@@ -48,13 +48,12 @@ public class LineaFacturaController implements Serializable {
     @Inject
     private DatosFacturacionDAO dfDao;
 
-    public Long getNFactura(){
-        return nFactura;
+    public Factura getFactura(){
+        return factura;
     }
 
-    public void setNFactura(Long n){
-        this.nFactura = n;
-        this.lineas = dao.buscarTodasLineaFacturas(n);
+    public void setFactura(Factura n){
+        this.factura = n;
     
     }    
     
@@ -96,10 +95,10 @@ public class LineaFacturaController implements Serializable {
     
     @PostConstruct
     public void cargaInicial() {
-        
-        //this.lineas = refrescarLista();
+        this.factura = this.autenticacionController.getFacturaActual();
         this.lineaActual = null;
         this.esNuevo = false;
+        this.lineas = refrescarLista();
     }
     
     public List<TipoIVA> getTipoIVA(){
@@ -113,16 +112,8 @@ public class LineaFacturaController implements Serializable {
     public void doNuevo() {
         this.esNuevo = true;
         this.lineaActual = new LineaFactura();
-        
-        
-        Factura factura = facturaDAO.buscarPorClave(nFactura);
-        
-        if( factura == null){
-            this.lineaActual.setNumeroDeFactura(null);
-        }else this.lineaActual.setNumeroDeFactura(factura);
-        
-        
-        this.lineaActual.setCantidad(5);
+        this.lineaActual.setNumeroDeFactura(factura);
+        this.lineaActual.setCantidad(1);
         this.lineaActual.setIva(dfDao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getTipoIVAPorDefecto());
         
     }
@@ -134,17 +125,32 @@ public class LineaFacturaController implements Serializable {
     
     public void doGuardarEditado() {
         float total = lineaActual.getCantidad() * lineaActual.getPrecio();
-        total -= ( lineaActual.getDescuento() * total ) / 100;
+        total -= ( lineaActual.getDescuento() * total ) / 100;// aplicado el descuento
+        
+        total += (float) (lineaActual.getIva().getPorcentaje() * total) / 100;//aplicando iva
         this.lineaActual.setTotal( total );
         
         if (this.esNuevo) {
+            factura.setImporte( factura.getImporte() + total);//se actualiza el importe
             dao.crear(lineaActual);
         } else {
+            
+            LineaFactura lineaAux = dao.buscarPorClave(lineaActual.getId());
+            total = factura.getImporte() - lineaAux.getTotal() + lineaActual.getTotal(); 
+            factura.setImporte(total);
             dao.actualizar(lineaActual);
         }
+        facturaDAO.actualizar(factura);
         this.lineas = refrescarLista();
         this.lineaActual = null;
         this.esNuevo = false;
+    }
+    
+    public void doBorrar(LineaFactura linea){
+        dao.eliminar(linea);
+        this.factura.setImporte( factura.getImporte() - linea.getTotal());
+        this.facturaDAO.actualizar(factura);
+        this.lineas = refrescarLista();
     }
     
     public void doCancelarEditado() {
@@ -153,7 +159,7 @@ public class LineaFacturaController implements Serializable {
     }
     
     private List<LineaFactura> refrescarLista() {
-        return dao.buscarTodasLineaFacturas(nFactura);
+        return dao.buscarTodasLineaFacturas(factura.getNumeroDeFactura());
     }
     
 }

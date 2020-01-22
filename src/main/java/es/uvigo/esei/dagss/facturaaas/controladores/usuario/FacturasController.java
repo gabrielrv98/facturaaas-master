@@ -197,8 +197,8 @@ public class FacturasController implements Serializable{
     }
     
     public String verDetalles(Factura factura) {
-        facturaActual = factura;
-        return "detalle_factura.xhtml?faces-redirect=true&NFactura=" + factura.getNumeroDeFactura();
+        this.autenticacionController.setFacturaActual(factura);
+        return "detalle_factura.xhtml";
     }
     
     public List<Cliente> getClientes(){

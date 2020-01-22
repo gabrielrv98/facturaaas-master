@@ -8,16 +8,13 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     
     
-<f:metadata>
-    <f:viewParam name="nFactura" value="#{lineaFacturaController.NFactura}" />
-</f:metadata>
     
     <ui:define name="menu">
         <ui:include src="/WEB-INF/includes/menu-usuario.xhtml"/>
     </ui:define>
     
     <ui:define name="tituloPagina">
-        <h1>Detalles</h1>
+        <h1>Detalles #{lineaFacturaController.factura.numeroDeFactura}</h1>
     </ui:define>
     
     <ui:define name="contenido">
@@ -65,11 +62,15 @@
 
 
                         <b:dataTableColumn label="" orderable="false">
-                            <b:commandButton id="botonEditar" icon-awesome="pencil" tooltip="Editar Factura" ajax="true" 
-                                             actionListener="#{lineaFacturaController.doEditar(factura)}" 
-                                             update=":formularioEditar"
-                                             oncomplete="$('.modal-editar-class').modal('show')"/>                                                                                                                    
-                        </b:dataTableColumn>                            
+                            <b:commandButton id="botonEditar" icon-awesome="pencil" tooltip="Editar linea de Factura" ajax="true" 
+                                             actionListener="#{lineaFacturaController.doEditar(linea)}" 
+                                             update=":formularioEditarLinea"
+                                             oncomplete="$('.modal-editar-class').modal('show')"/>       
+                            
+                            <b:commandButton id="botonBorrar" icon-awesome="bin" tooltip="Borrar linea de Factura" ajax="true" 
+                                             actionListener="#{lineaFacturaController.doBorrar(linea)}" />
+                        </b:dataTableColumn>
+                        
                     </b:dataTable>
 
                     <f:facet name="footer">    
