@@ -9,7 +9,7 @@
     
     
 <f:metadata>
-    <f:viewParam name="NFactura" value="#{lineaFacturaController.NFactura}" />
+    <f:viewParam name="nFactura" value="#{lineaFacturaController.NFactura}" />
 </f:metadata>
     
     <ui:define name="menu">
@@ -18,14 +18,6 @@
     
     <ui:define name="tituloPagina">
         <h1>Detalles</h1>
-    </ui:define>
-
-    <ui:define name="contenido">
-         <h:form id="formularioListado">     
-            
-        </h:form>  
-        
-        <ui:include src="fragmento-editar.xhtml"/>
     </ui:define>
     
     <ui:define name="contenido">

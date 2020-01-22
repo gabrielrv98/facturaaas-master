@@ -47,16 +47,16 @@ public class LineaFacturaController implements Serializable {
     
     @Inject
     private DatosFacturacionDAO dfDao;
-    
-    
+
     public Long getNFactura(){
         return nFactura;
     }
-    
+
     public void setNFactura(Long n){
         this.nFactura = n;
-        this.lineas = dao.buscarTodasLineaFacturas(nFactura);
-    }
+        this.lineas = dao.buscarTodasLineaFacturas(n);
+    
+    }    
     
     public void showLineas(){
         lineas = refrescarLista();
