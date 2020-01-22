@@ -197,8 +197,8 @@ public class FacturasController implements Serializable{
     }
     
     public String verDetalles(Factura factura) {
-        return "/detalle_factura.xhtml";
-            //return "/detalle_factura.xhtml?faces-redirect=true&nFactura=" + factura.getNumeroDeFactura();
+        facturaActual = factura;
+        return "detalle_factura.xhtml?faces-redirect=true&NFactura=" + factura.getNumeroDeFactura();
     }
     
     public List<Cliente> getClientes(){
@@ -215,7 +215,8 @@ public class FacturasController implements Serializable{
         this.facturaActual.setFecha(Calendar.getInstance().getTime());
         this.facturaActual.setEstado(EstadoFactura.EMITIDA);
         this.facturaActual.setPropietario(autenticacionController.getUsuarioLogueado());
-        this.facturaActual.setFormaDePago(DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto());
+        FormaPago fp = DFdao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getFormaPagoPorDefecto();
+        if ( fp != null) this.facturaActual.setFormaDePago( fp );
         this.facturaActual.setImporte(0);
     }
 
@@ -233,7 +234,6 @@ public class FacturasController implements Serializable{
         if (this.esNuevo) {
             dao.crear(facturaActual);
             pagosController.doNuevo(facturaActual);
-            
             
         } else {
             dao.actualizar(facturaActual);

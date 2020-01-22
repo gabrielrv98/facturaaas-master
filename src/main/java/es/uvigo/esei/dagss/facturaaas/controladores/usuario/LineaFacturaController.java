@@ -7,9 +7,12 @@ package es.uvigo.esei.dagss.facturaaas.controladores.usuario;
 
 import es.uvigo.esei.dagss.facturaaas.controladores.AutenticacionController;
 import es.uvigo.esei.dagss.facturaaas.daos.DatosFacturacionDAO;
+import es.uvigo.esei.dagss.facturaaas.daos.FacturaDAO;
 import es.uvigo.esei.dagss.facturaaas.daos.LineaFacturaDAO;
+import es.uvigo.esei.dagss.facturaaas.daos.TipoIVADAO;
 import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import es.uvigo.esei.dagss.facturaaas.entidades.LineaFactura;
+import es.uvigo.esei.dagss.facturaaas.entidades.TipoIVA;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -26,10 +29,15 @@ import javax.inject.Named;
 public class LineaFacturaController implements Serializable {
    
     private Long nFactura;
-    private Factura factura;
     private List<LineaFactura> lineas;
     private LineaFactura lineaActual;
     private boolean esNuevo;
+    
+    @Inject 
+    private TipoIVADAO tipoIVADAO;
+    
+    @Inject
+    private FacturaDAO facturaDAO;
     
     @Inject
     private LineaFacturaDAO dao;
@@ -39,25 +47,19 @@ public class LineaFacturaController implements Serializable {
     
     @Inject
     private DatosFacturacionDAO dfDao;
-    
-    
+
     public Long getNFactura(){
         return nFactura;
     }
-    
+
     public void setNFactura(Long n){
-        nFactura = n;
-    }
-    public Factura getFactura() {
-        return factura;
-    }
+        this.nFactura = n;
+        this.lineas = dao.buscarTodasLineaFacturas(n);
+    
+    }    
     
     public void showLineas(){
         lineas = refrescarLista();
-    }
-
-    public void setFactura(Factura factura) {
-        this.factura = factura;
     }
 
     public List<LineaFactura> getLineas() {
@@ -94,12 +96,15 @@ public class LineaFacturaController implements Serializable {
     
     @PostConstruct
     public void cargaInicial() {
-       this.lineas = refrescarLista();
+        
+        //this.lineas = refrescarLista();
         this.lineaActual = null;
         this.esNuevo = false;
     }
     
-    
+    public List<TipoIVA> getTipoIVA(){
+        return tipoIVADAO.buscarActivos();
+    }
     
     public void doBuscarTodos() {
         this.lineas = refrescarLista();
@@ -108,8 +113,16 @@ public class LineaFacturaController implements Serializable {
     public void doNuevo() {
         this.esNuevo = true;
         this.lineaActual = new LineaFactura();
-        this.lineaActual.setNumeroDeFactura(factura);
-        this.lineaActual.setCantidad(1);
+        
+        
+        Factura factura = facturaDAO.buscarPorClave(nFactura);
+        
+        if( factura == null){
+            this.lineaActual.setNumeroDeFactura(null);
+        }else this.lineaActual.setNumeroDeFactura(factura);
+        
+        
+        this.lineaActual.setCantidad(5);
         this.lineaActual.setIva(dfDao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getTipoIVAPorDefecto());
         
     }
@@ -120,6 +133,10 @@ public class LineaFacturaController implements Serializable {
     }
     
     public void doGuardarEditado() {
+        float total = lineaActual.getCantidad() * lineaActual.getPrecio();
+        total -= ( lineaActual.getDescuento() * total ) / 100;
+        this.lineaActual.setTotal( total );
+        
         if (this.esNuevo) {
             dao.crear(lineaActual);
         } else {
@@ -136,7 +153,6 @@ public class LineaFacturaController implements Serializable {
     }
     
     private List<LineaFactura> refrescarLista() {
-        //return dao.buscarTodasLineaFacturas(factura.getNumeroDeFactura());
         return dao.buscarTodasLineaFacturas(nFactura);
     }
     
