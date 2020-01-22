@@ -15,7 +15,87 @@
     </ui:define>
 
     <ui:define name="contenido">
-        <h2>Historia de usuario H16</h2>
+         <h:form id="formularioListado">     
+            <b:container fluid="true">
+                <b:panel title="Listado de Pagos" collapsible="false" offset="1" span="9">
+                    <b:panelGrid columns="2" col-spans="6,2,2,2">
+                        <b:inputText value="#{pagosController.textoBusqueda}" />
+                        <b:commandButton value="Buscar pagos por cliente."  
+                                         actionListener="#{pagosController.doBuscarPorCliente()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar por Nº de factura."  
+                                         actionListener="#{pagosController.doBuscarPorNumeroDeFactura()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar por estado."  
+                                         actionListener="#{pagosController.doBuscarPorEstado()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        <b:commandButton value="Buscar Todos."  
+                                         actionListener="#{pagosController.doBuscarPorFechaVencimiento()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        
+                        
+                        <h:outputLabel value="Cliente" for="cliente"/>
+                        <b:selectOneMenu id="cliente" value="#{facturasController.clienteBusqueda}" >
+                                        <f:selectItems var="cliente" value="#{facturasController.getClientes()}" 
+                                                       itemLabel="#{cliente.nombre}, #{cliente.nif}" 
+                                                       itemValue="#{cliente}"/>
+                        </b:selectOneMenu>
+                        
+                        <b:commandButton value="Buscar por cliente."  
+                                         actionListener="#{pagosController.doBuscarPorCliente()}"
+                                         update=":formularioListado:tablaListado :mensajesGlobal"/>
+                        
+                    </b:panelGrid>
+
+
+                    <b:dataTable id="tablaListado"  class="tablaListadoClass"
+                                 value="#{pagosController.pagos}"
+                                 var="pago" 
+                                 striped="true" 
+                                 page-length="10" searching="false">
+                        
+                        <b:dataTableColumn label="Nº de pago">
+                            <h:outputText value="#{pago.id}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Nº de factura">
+                            <h:outputText value="#{pago.numeroDeFactura}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Estado">
+                            <h:outputText value="#{pago.estado}" />
+                        </b:dataTableColumn>                    
+
+                        <b:dataTableColumn label="Cliente">
+                            <h:outputText value="#{pago.cliente.nombre} - #{pago.cliente.nif}" />
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Importe">
+                            <h:outputText value="#{pago.importe}"/>
+                        </b:dataTableColumn>
+                        
+                        <b:dataTableColumn label="Fecha Vencimiento">
+                            <h:outputText value="#{pago.fechavencimiento}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </b:dataTableColumn>    
+                        
+                        <b:dataTableColumn label="" orderable="false">
+                            <b:commandButton id="botonEditar" icon-awesome="pencil" tooltip="Editar Pago" ajax="true" 
+                                             actionListener="#{pagosController.doEditar(pago)}" 
+                                             update=":formularioEditar"
+                                             oncomplete="$('.modal-editar-class').modal('show')"/>       
+                
+                            
+                            
+                        </b:dataTableColumn>
+
+                    </b:dataTable>
+                    
+                </b:panel>
+            </b:container>
+        </h:form>  
+        <ui:include src="fragmento-editar.xhtml"/>
     </ui:define>    
     
     

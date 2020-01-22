@@ -2,6 +2,7 @@ package es.uvigo.esei.dagss.facturaaas.controladores;
 
 import es.uvigo.esei.dagss.facturaaas.autenticacion.FiltroAutenticacion;
 import es.uvigo.esei.dagss.facturaaas.daos.UsuarioDAO;
+import es.uvigo.esei.dagss.facturaaas.entidades.Factura;
 import es.uvigo.esei.dagss.facturaaas.entidades.RolUsuario;
 import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
 import es.uvigo.esei.dagss.facturaaas.servicios.AutenticacionService;
@@ -19,6 +20,7 @@ public class AutenticacionController implements Serializable {
 
     private boolean estaAutenticado;
     private Usuario usuarioLogueado;
+    private Factura facturaActual;
 
     @Inject
     AutenticacionService autenticacionService;
@@ -47,6 +49,14 @@ public class AutenticacionController implements Serializable {
 
     public void setUsuarioLogueado(Usuario usuarioLogueado) {
         this.usuarioLogueado = usuarioLogueado;
+    }
+
+    public Factura getFacturaActual() {
+        return facturaActual;
+    }
+
+    public void setFacturaActual(Factura facturaActual) {
+        this.facturaActual = facturaActual;
     }
 
 
