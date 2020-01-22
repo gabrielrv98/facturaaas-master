@@ -73,8 +73,8 @@ public class LineaFactura implements Serializable{
         return numeroDeFactura;
     }
 
-    public void setNumeroDeFactura(Factura numeroDeFactura) {
-        this.numeroDeFactura = numeroDeFactura;
+    public void setNumeroDeFactura(Factura factura) {
+        this.numeroDeFactura = factura;
     }
 
     public String getConcepto() {

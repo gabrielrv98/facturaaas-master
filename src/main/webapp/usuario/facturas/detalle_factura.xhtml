@@ -1,14 +1,17 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
-<f:metadata>
-    <f:viewParam name="nFactura" value="#{facturasController.facturaActual.numeroDeFactura}" />
-</f:metadata>
 <ui:composition template="/WEB-INF/includes/plantilla.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"                
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    
+<f:metadata>
+    <f:viewParam name="NFactura" value="#{lineaFacturaController.NFactura}" />
+</f:metadata>
+    
     <ui:define name="menu">
         <ui:include src="/WEB-INF/includes/menu-usuario.xhtml"/>
     </ui:define>
@@ -26,53 +29,6 @@
     </ui:define>
     
     <ui:define name="contenido">
-        <b:container fluid="true">
-                <b:panel title="Detalles de Factura" collapsible="false" offset="1" span="9">
-
-
-                    <b:dataTable id="tablaListado"  class="tablaListadoClass"
-                                 value="#{lineaFacturaController.lineas}"
-                                 var="linea" 
-                                 striped="true" 
-                                 page-length="10" searching="false">
-                        
-                        <b:dataTableColumn label="Nuero de la factura">
-                            <h:outputText value="#{linea.numeroDeFactura}"/>
-                        </b:dataTableColumn>
-                        
-                        <b:dataTableColumn label="Concepto">
-                            <h:outputText value="#{linea.concepto}" />
-                        </b:dataTableColumn>                    
-                        
-                        <b:dataTableColumn label="Cantidad">
-                            <h:outputText value="#{linea.cantidad}"/>
-                        </b:dataTableColumn>
-
-                        <b:dataTableColumn label="Precio">
-                            <h:outputText value="#{linea.precio}"/>
-                        </b:dataTableColumn>
-                        
-                        <b:dataTableColumn label="Descuento">
-                            <h:outputText value="#{linea.decuento}"/>
-                        </b:dataTableColumn>
-                        
-                        <b:dataTableColumn label="Total">
-                            <h:outputText value="#{linea.total}"/>
-                        </b:dataTableColumn>
-                                          
-
-                        
-                        <b:dataTableColumn label="Tipo iva">
-                            <h:outputText value="#{linea.iva.nombre}, 
-                                          porcentaje- #{linea.iva.porcentaje}" />
-                        </b:dataTableColumn>                    
-
-                        
-                      
-                    </b:dataTable>
-
-                </b:panel>
-            </b:container>
         
          <h:form id="formularioListado">     
             <b:container fluid="true">
@@ -124,17 +80,17 @@
                         </b:dataTableColumn>                            
                     </b:dataTable>
 
-                    <f:facet name="footer">     <!-- no se si tooltip esta bien -->
-                        <b:commandButton id="botonNuevo" icon-awesome="plus" value="Crear Factura" tooltip="Nuevo Cliente" ajax="true"
+                    <f:facet name="footer">    
+                        <b:commandButton id="botonNuevo" icon-awesome="plus" value="Crear linea de factura" tooltip="Crear linea de factura" ajax="true"
                                          actionListener="#{lineaFacturaController.doNuevo()}" 
-                                         update=":formularioEditar"
+                                         update=":formularioEditarLinea"
                                          oncomplete="$('.modal-editar-class').modal('show')"/>
                     </f:facet>
                 </b:panel>
             </b:container>
         </h:form>  
         
-        <ui:include src="fragmento-editar.xhtml"/>
+        <ui:include src="editar-linea.xhtml"/>
     </ui:define>  
     
     

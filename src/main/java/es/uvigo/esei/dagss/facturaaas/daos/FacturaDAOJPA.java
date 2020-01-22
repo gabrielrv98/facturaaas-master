@@ -24,6 +24,22 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
     
    
     @Override
+    public Factura buscarPorClave(Long nFactura){
+        TypedQuery<Factura> query = em.createQuery("SELECT f FROM Factura AS f WHERE f.numeroDeFactura = :numeroDeFactura", Factura.class);
+        query.setParameter("numeroDeFactura", nFactura);
+        
+        return query.getSingleResult();
+    }
+    
+    @Override
+    public Factura buscarPorClave(String nFactura){
+        TypedQuery<Factura> query = em.createQuery("SELECT f FROM Factura AS f WHERE f.numeroDeFactura = :numeroDeFactura", Factura.class);
+        query.setParameter("numeroDeFactura", nFactura);
+        
+        return query.getSingleResult();
+    }
+    
+    @Override
     public List<Factura> buscarTodasFacturas(Usuario propietario){
         TypedQuery<Factura> query = em.createQuery("SELECT f FROM Factura AS f WHERE f.propietario.id = :idpropietario", Factura.class);
         query.setParameter("idpropietario", propietario.getId());

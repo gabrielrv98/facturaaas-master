@@ -23,4 +23,7 @@ public interface FacturaDAO extends GenericoDAO<Factura, Long>{
     public List<Factura> buscarPorEstado(Usuario propietario, EstadoFactura estado);
     public List<Factura> buscarPorCliente(Usuario propietario, Cliente cliente);
     
+    
+    public Factura buscarPorClave(String nFactura);
+    
 }
