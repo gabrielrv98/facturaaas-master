@@ -12,7 +12,6 @@ import es.uvigo.esei.dagss.facturaaas.entidades.Usuario;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -25,14 +24,6 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
    
     @Override
     public Factura buscarPorClave(Long nFactura){
-        TypedQuery<Factura> query = em.createQuery("SELECT f FROM Factura AS f WHERE f.numeroDeFactura = :numeroDeFactura", Factura.class);
-        query.setParameter("numeroDeFactura", nFactura);
-        
-        return query.getSingleResult();
-    }
-    
-    @Override
-    public Factura buscarPorClave(String nFactura){
         TypedQuery<Factura> query = em.createQuery("SELECT f FROM Factura AS f WHERE f.numeroDeFactura = :numeroDeFactura", Factura.class);
         query.setParameter("numeroDeFactura", nFactura);
         
@@ -57,9 +48,9 @@ public class FacturaDAOJPA extends GenericoDAOJPA<Factura, Long> implements Fact
             nFactura = -1;
         }
         TypedQuery<Factura> query = 
-                em.createQuery("SELECT u "
-                        + "FROM Factura AS u "
-                        + "WHERE u.numeroDeFactura = :numeroDeFactura AND u.propietario.id = :idPropietario", Factura.class);
+                em.createQuery("SELECT f "
+                        + "FROM Factura AS f "
+                        + "WHERE f.numeroDeFactura = :numeroDeFactura AND f.propietario.id = :idPropietario", Factura.class);
         query.setParameter("numeroDeFactura", nFactura);
         query.setParameter("idPropietario", propietario.getId());
         List<Factura> resultados = query.getResultList();

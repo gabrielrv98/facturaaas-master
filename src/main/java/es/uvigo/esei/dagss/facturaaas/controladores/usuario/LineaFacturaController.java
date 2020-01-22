@@ -55,7 +55,7 @@ public class LineaFacturaController implements Serializable {
     
     public void setNFactura(Long n){
         this.nFactura = n;
-        this.lineas = refrescarLista();
+        this.lineas = dao.buscarTodasLineaFacturas(nFactura);
     }
     
     public void showLineas(){
@@ -96,6 +96,7 @@ public class LineaFacturaController implements Serializable {
     
     @PostConstruct
     public void cargaInicial() {
+        
         //this.lineas = refrescarLista();
         this.lineaActual = null;
         this.esNuevo = false;
@@ -114,9 +115,13 @@ public class LineaFacturaController implements Serializable {
         this.lineaActual = new LineaFactura();
         
         
-        Factura factura = facturaDAO.buscarPorClave(Float.toString(nFactura));
+        Factura factura = facturaDAO.buscarPorClave(nFactura);
         
-        if( factura != null) this.lineaActual.setNumeroDeFactura(factura);
+        if( factura == null){
+            this.lineaActual.setNumeroDeFactura(null);
+        }else this.lineaActual.setNumeroDeFactura(factura);
+        
+        
         this.lineaActual.setCantidad(5);
         this.lineaActual.setIva(dfDao.buscarConPropietario(autenticacionController.getUsuarioLogueado()).getTipoIVAPorDefecto());
         
@@ -128,9 +133,9 @@ public class LineaFacturaController implements Serializable {
     }
     
     public void doGuardarEditado() {
-        //float total = lineaActual.getCantidad() * lineaActual.getPrecio();
-        //total -= ( lineaActual.getDescuento() * total ) / 100;
-        this.lineaActual.setTotal( 10 );
+        float total = lineaActual.getCantidad() * lineaActual.getPrecio();
+        total -= ( lineaActual.getDescuento() * total ) / 100;
+        this.lineaActual.setTotal( total );
         
         if (this.esNuevo) {
             dao.crear(lineaActual);

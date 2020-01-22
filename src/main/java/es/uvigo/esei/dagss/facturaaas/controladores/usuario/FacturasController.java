@@ -194,7 +194,8 @@ public class FacturasController implements Serializable{
     }
     
     public String verDetalles(Factura factura) {
-        return "detalle_factura.xhtml?faces-redirect=true&nFactura=" + factura.getNumeroDeFactura();
+        facturaActual = factura;
+        return "detalle_factura.xhtml?faces-redirect=true&NFactura=" + factura.getNumeroDeFactura();
     }
     
     public List<Cliente> getClientes(){
@@ -229,6 +230,7 @@ public class FacturasController implements Serializable{
     public void doGuardarEditado() {
         if (this.esNuevo) {
             dao.crear(facturaActual);
+            //crear pagos asociados
         } else {
             dao.actualizar(facturaActual);
         }
