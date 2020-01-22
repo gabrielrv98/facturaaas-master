@@ -16,14 +16,11 @@
                              collapsible="false">
                         <b:panelGrid columns="2" col-spans="4,8">
 
-                            <h:outputLabel value="nFactura" for="nf"/>
-                            <b:inputText id="nf" value="#{lineaFacturaController.lineaActual.numeroDeFactura.numeroDeFactura}" required="true" requiredMessage="Indica el n"/>
-                            
                             
                             <h:outputLabel value="Concepto" for="concepto"/>
                             <b:inputText id="concepto" value="#{lineaFacturaController.lineaActual.concepto}" required="true" requiredMessage="Indica el concepto"/>
                             
-                            <h:outputLabel value="Cantidad unitaria" for="cantidad"/>
+                            <h:outputLabel value="Cantidad" for="cantidad"/>
                             <b:inputText id="cantidad" value="#{lineaFacturaController.lineaActual.cantidad}" required="true" requiredMessage="Indica la cantida de articulos">
                             </b:inputText>
                             

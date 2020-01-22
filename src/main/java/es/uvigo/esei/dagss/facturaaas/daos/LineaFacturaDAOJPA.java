@@ -20,10 +20,17 @@ public class LineaFacturaDAOJPA extends GenericoDAOJPA<LineaFactura, Long> imple
     @Override
     public List<LineaFactura> buscarTodasLineaFacturas(Long numeroFactura) {
     
-        TypedQuery<LineaFactura> query = em.createQuery("SELECT l FROM LineaFactura AS l WHERE l.numeroDeFactura = :nFactura", LineaFactura.class);
+        TypedQuery<LineaFactura> query = em.createQuery("SELECT li FROM LineaFactura AS li WHERE li.numeroDeFactura.numeroDeFactura = :nFactura", LineaFactura.class);
         query.setParameter("nFactura", numeroFactura);
         
         return query.getResultList();
+    }
+    
+    @Override
+    public void eliminar(LineaFactura l){
+        TypedQuery<LineaFactura> query = em.createQuery("DELETE FROM LineaFactura AS li WHERE li.id = :nFactura", LineaFactura.class);
+        query.setParameter("nFactura", l.getId());
+        query.executeUpdate();
     }
     
     
