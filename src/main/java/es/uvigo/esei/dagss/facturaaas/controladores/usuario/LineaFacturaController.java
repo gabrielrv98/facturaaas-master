@@ -130,7 +130,6 @@ public class LineaFacturaController implements Serializable {
         total += (float) (lineaActual.getIva().getPorcentaje() * total) / 100;//aplicando iva
         this.lineaActual.setTotal( total );
         
-        this.facturaDAO.actualizar(factura);
         if (this.esNuevo) {
             factura.setImporte( factura.getImporte() + total);//se actualiza el importe
             dao.crear(lineaActual);
@@ -141,6 +140,7 @@ public class LineaFacturaController implements Serializable {
             factura.setImporte(total);
             dao.actualizar(lineaActual);
         }
+        facturaDAO.actualizar(factura);
         this.lineas = refrescarLista();
         this.lineaActual = null;
         this.esNuevo = false;
@@ -149,7 +149,8 @@ public class LineaFacturaController implements Serializable {
     public void doBorrar(LineaFactura linea){
         dao.eliminar(linea);
         this.factura.setImporte( factura.getImporte() - linea.getTotal());
-        this.lineas = this.refrescarLista();
+        this.facturaDAO.actualizar(factura);
+        this.lineas = refrescarLista();
     }
     
     public void doCancelarEditado() {
