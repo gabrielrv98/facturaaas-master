@@ -31,6 +31,8 @@ public class PagosController implements Serializable{
     private List<Pago> pagosFactura;
     private boolean esNuevo;
     private String textoBusqueda;
+    
+    private EstadoPago[] estadosPago = EstadoPago.values();
 
    
     @Inject
@@ -57,6 +59,14 @@ public class PagosController implements Serializable{
 
     public void setPagoAux(Pago pagoAux) {
         this.pagoAux = pagoAux;
+    }
+    
+        public EstadoPago[] getEstadosPago() {
+        return estadosPago;
+    }
+
+    public void setEstadosPago(EstadoPago[] estadosPago) {
+        this.estadosPago = estadosPago;
     }
 
     public boolean isEsNuevo() {

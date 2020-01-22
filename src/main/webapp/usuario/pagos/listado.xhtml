@@ -78,7 +78,17 @@
                             <h:outputText value="#{pago.fechavencimiento}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
-                        </b:dataTableColumn>                  
+                        </b:dataTableColumn>    
+                        
+                        <b:dataTableColumn label="" orderable="false">
+                            <b:commandButton id="botonEditar" icon-awesome="pencil" tooltip="Editar Pago" ajax="true" 
+                                             actionListener="#{pagosController.doEditar(pago)}" 
+                                             update=":formularioEditar"
+                                             oncomplete="$('.modal-editar-class').modal('show')"/>       
+                
+                            
+                            
+                        </b:dataTableColumn>
 
                     </b:dataTable>
                     
